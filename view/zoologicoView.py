@@ -5,7 +5,6 @@ import model.zoologico as zoologicoModel
 class zoologicoView:
     def mostrarMenu(self):
         print("Bienvenido al Zoologico de Cali")
-        opcion = 0
         zoologico = zoologicoModel.zoologico()
         controlador = ZoologicoController.zoologicoController(zoologico,self)
         while True:
@@ -28,7 +27,29 @@ class zoologicoView:
 
 
     def menuCrearHabitat(self):
-        habitat = input("Escriba el habitat: ")
-        nuevaHabitat = habitatModel.habitat(habitat)
+        print("Hola usuario, estas son las opciones para agregar habitats\n")
+        print("-> desertico\n""-> selvatico\n" "-> polar\n" "-> acuatico\n")
+        habitat = input("Escriba el habitat que desea agregar: ")
+        bandera = 0
+        while(bandera == 0):
+            if (habitat != "desertico" and habitat != "selvatico" and habitat != "polar" and habitat != "acuatico"):
+                print("Asegurate de colocar bien el tipo de habitat")
+                habitat = input("Escriba el habitat que desea agregar: ")
+            else:
+                bandera = 1
+        numAnimales = input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat): ")
+        print("-> desertico: 30° - 40°\n""-> selvatico: 10° - 20°\n" "-> polar: -5° - -20°\n" "-> acuatico: 2° - 8°\n")
+        temperatura = input("Escribe la temperatura del habitat: ")
+        print("-> carnivoro\n""-> herbivoro\n" "-> omnivoro\n")
+        dietaAnimal = input("Escribe la dieta del habitat: ")
+
+        nuevaHabitat = habitatModel.habitat(habitat, numAnimales, temperatura, dietaAnimal)
         return nuevaHabitat
+
+    def menuCrearAnimales(self):
+        print("Hola usuario, escribe las caracteristicas del animal que quieres crear\n")
+        id = input("Escribe el id del animal: ")
+        nombre = input("Escribe el nombre del animal: ")
+        tipoHabitat = input("Escriba el habitat al que pertenece el animal: ")
+        edad = input("Escribe la edad del animal: ")
 
