@@ -4,6 +4,7 @@ class habitat:
         self.numAnimales = numAnimales
         self.temperatura = temperatura
         self.dieta = dieta
+        self.animales = []
 
 
     def imprimirHabitat(self):
@@ -11,3 +12,7 @@ class habitat:
         print("Capacidad maxima: ", self.numAnimales)
         print("Temperatura: ", self.temperatura)
         print("Dieta: ", self.dieta)
+
+    def agregarAnimales(self, animal):
+        self.animales.append(animal)
+        print("Se agrego el animal correctamente")

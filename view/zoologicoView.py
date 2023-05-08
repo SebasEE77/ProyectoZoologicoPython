@@ -1,12 +1,16 @@
 import model.habitat as habitatModel
 import controller.zoologicoController as ZoologicoController
 import model.zoologico as zoologicoModel
+import controller.habitatController as HabitatController
+import model.animales as animalesModel
 
 class zoologicoView:
     def mostrarMenu(self):
         print("Bienvenido al Zoologico de Cali")
         zoologico = zoologicoModel.zoologico()
-        controlador = ZoologicoController.zoologicoController(zoologico,self)
+        animales = animalesModel.animales()
+        controladorhabitat = HabitatController.habitatController(animales,self)
+        controladorZoologico = ZoologicoController.zoologicoController(zoologico,self)
         while True:
             print("\n\t**** Bienvenido al Zoologico de Cali ****\n")
             print("1. Agregar habitat al zoologico")
@@ -21,9 +25,11 @@ class zoologicoView:
             opcion = int(input("Por favor ingrese una opción: "))
 
             if opcion == 1:
-                controlador.ejecutarOpcionHabitat(opcion)
+                controladorZoologico.ejecutarOpcionHabitat(opcion)
+            elif opcion == 2:
+                controladorhabitat.ejecutarOpcionAnimales(opcion)
             elif opcion == 3:
-                controlador.ejecutarOpcionHabitat(opcion)
+                controladorZoologico.ejecutarOpcionHabitat(opcion)
 
 
     def menuCrearHabitat(self):
@@ -50,6 +56,15 @@ class zoologicoView:
         print("Hola usuario, escribe las caracteristicas del animal que quieres crear\n")
         id = input("Escribe el id del animal: ")
         nombre = input("Escribe el nombre del animal: ")
+        print("-> desertico\n""-> selvatico\n" "-> polar\n" "-> acuatico\n")
         tipoHabitat = input("Escriba el habitat al que pertenece el animal: ")
+        print("-> La edad debe ser entre los 0 - 15 años")
         edad = input("Escribe la edad del animal: ")
+        print("-> carnivoro\n""-> herbivoro\n" "-> omnivoro\n")
+        alimentacion = input("Escriba el tipo de alimentacion: ")
+        print("-> Las horas de dormir deben ser entre 5 - 20 horas")
+        horasDormir = input("Escribe las horas de dormir del animal: ")
+
+        nuevoAnimal = animalesModel.animales(id,nombre,tipoHabitat,edad,alimentacion,horasDormir)
+        return nuevoAnimal
 
