@@ -4,8 +4,7 @@ class habitatController:
         self.vista = vista
 
     def ejecutarOpcionAnimales(self, opcion):
-        if opcion == 2:
-            animal = self.vista.menuCrearAnimales()
-            self.modelo.agregarAnimales(animal)
-        elif opcion == 3:
-            self.modelo.mostrarHabitats()
+        if opcion == 4:
+            self.modelo.mostrarAnimales()
+        elif opcion == 5:
+            self.modelo.mostrarAnimalInfo()

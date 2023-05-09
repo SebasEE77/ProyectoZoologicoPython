@@ -8,9 +8,9 @@ class zoologicoView:
     def mostrarMenu(self):
         print("Bienvenido al Zoologico de Cali")
         zoologico = zoologicoModel.zoologico()
-        animales = animalesModel.animales()
-        controladorhabitat = HabitatController.habitatController(animales,self)
-        controladorZoologico = ZoologicoController.zoologicoController(zoologico,self)
+        habitat = habitatModel.habitat(None,None,None,None)
+        controlador2 = HabitatController.habitatController(habitat,self)
+        controlador = ZoologicoController.zoologicoController(zoologico, self)
         while True:
             print("\n\t**** Bienvenido al Zoologico de Cali ****\n")
             print("1. Agregar habitat al zoologico")
@@ -21,15 +21,22 @@ class zoologicoView:
             print("6. Menu de comidas")
             print("7. Interactuar con un animal")
             print("8. Salir")
-
             opcion = int(input("Por favor ingrese una opción: "))
 
             if opcion == 1:
-                controladorZoologico.ejecutarOpcionHabitat(opcion)
+                controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 2:
-                controladorhabitat.ejecutarOpcionAnimales(opcion)
+                controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 3:
-                controladorZoologico.ejecutarOpcionHabitat(opcion)
+                controlador.ejecutarOpcionHabitat(opcion)
+            elif opcion == 4:
+                controlador2.ejecutarOpcionAnimales(opcion)
+            elif opcion == 5:
+                controlador2.ejecutarOpcionAnimales(opcion)
+            elif opcion == 8:
+                print("Muchas gracias por visitarnos")
+                break
+
 
 
     def menuCrearHabitat(self):
@@ -43,28 +50,95 @@ class zoologicoView:
                 habitat = input("Escriba el habitat que desea agregar: ")
             else:
                 bandera = 1
-        numAnimales = input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat): ")
-        print("-> desertico: 30° - 40°\n""-> selvatico: 10° - 20°\n" "-> polar: -5° - -20°\n" "-> acuatico: 2° - 8°\n")
-        temperatura = input("Escribe la temperatura del habitat: ")
+        numAnimales = int(input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat): "))
+        while(bandera == 1):
+            if(numAnimales < 1 or numAnimales > 4):
+                print("Escribe nuevamente la cantidad maxima de animales")
+                numAnimales = int(input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat): "))
+            else:
+                bandera = 0
+        print("-> desertico: 30° - 40°\n""-> selvatico: 10° - 20°\n" "-> polar: -20° - -5°\n" "-> acuatico: 2° - 8°\n")
+        temperatura = int(input("Escribe la temperatura del habitat: "))
+        while(bandera == 0):
+            if (habitat == "desertico" and (temperatura < 30 or temperatura > 40)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            elif (habitat == "selvatico" and (temperatura < 10 or temperatura > 20)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            elif (habitat == "polar" and (temperatura < -20 or temperatura > -5)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            elif (habitat == "acuatico" and (temperatura < 2 or temperatura > 8)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            else:
+                bandera = 1
         print("-> carnivoro\n""-> herbivoro\n" "-> omnivoro\n")
         dietaAnimal = input("Escribe la dieta del habitat: ")
-
+        while (bandera == 1):
+            if (dietaAnimal != "carnivoro" and dietaAnimal != "herbivoro" and dietaAnimal != "omnivoro"):
+                print("Asegurate de colocar bien la dieta")
+                dietaAnimal = input("Escribe la dieta del habitat: ")
+            else:
+                bandera = 0
         nuevaHabitat = habitatModel.habitat(habitat, numAnimales, temperatura, dietaAnimal)
         return nuevaHabitat
 
     def menuCrearAnimales(self):
+        bandera = 0
         print("Hola usuario, escribe las caracteristicas del animal que quieres crear\n")
-        id = input("Escribe el id del animal: ")
+        id = int(input("Escribe el id del animal: "))
         nombre = input("Escribe el nombre del animal: ")
         print("-> desertico\n""-> selvatico\n" "-> polar\n" "-> acuatico\n")
-        tipoHabitat = input("Escriba el habitat al que pertenece el animal: ")
+        habitat = input("Escriba el habitat al que pertenece el animal: ")
+        while (bandera == 0):
+            if (habitat != "desertico" and habitat != "selvatico" and habitat != "polar" and habitat != "acuatico"):
+                print("Asegurate de colocar bien el tipo de habitat")
+                habitat = input("Escriba el habitat que desea agregar: ")
+            else:
+                bandera = 1
         print("-> La edad debe ser entre los 0 - 15 años")
-        edad = input("Escribe la edad del animal: ")
+        edad = int(input("Escribe la edad del animal: "))
+        while (bandera == 1):
+            if (edad < 0 or edad > 15):
+                print("Escribe otra vez la edad")
+                edad = int(input("Escribe la edad del animal: "))
+            else:
+                bandera = 0
         print("-> carnivoro\n""-> herbivoro\n" "-> omnivoro\n")
-        alimentacion = input("Escriba el tipo de alimentacion: ")
+        dieta = input("Escriba el tipo de alimentacion: ")
+        while (bandera == 0):
+            if (dieta != "carnivoro" and dieta != "herbivoro" and dieta != "omnivoro"):
+                print("Asegurate de colocar bien la alimentacion")
+                dieta = input("Escriba el tipo de alimentacion: ")
+            else:
+                bandera = 1
+        print("-> desertico: 30° - 40°\n""-> selvatico: 10° - 20°\n" "-> polar: -20° - -5°\n" "-> acuatico: 2° - 8°\n")
+        temperatura = int(input("Escribe la temperatura que puede soportar el animal: "))
+        while (bandera == 1):
+            if (habitat == "desertico" and (temperatura < 30 or temperatura > 40)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            elif (habitat == "selvatico" and (temperatura < 10 or temperatura > 20)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            elif (habitat == "polar" and (temperatura < -20 or temperatura > -5)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            elif (habitat == "acuatico" and (temperatura < 2 or temperatura > 8)):
+                print("Escribe nuevamente la temperatura")
+                temperatura = int(input("Escribe la temperatura del habitat: "))
+            else:
+                bandera = 0
         print("-> Las horas de dormir deben ser entre 5 - 20 horas")
-        horasDormir = input("Escribe las horas de dormir del animal: ")
-
-        nuevoAnimal = animalesModel.animales(id,nombre,tipoHabitat,edad,alimentacion,horasDormir)
+        horasDormir = int(input("Escribe las horas de dormir del animal: "))
+        while (bandera == 0):
+            if (horasDormir < 5 or horasDormir > 20):
+                print("Escribe bien las horas de dormir")
+                horasDormir = int(input("Escribe las horas de dormir del animal: "))
+            else:
+                bandera = 1
+        nuevoAnimal = animalesModel.animales(id,nombre,habitat,edad,dieta,horasDormir,temperatura)
         return nuevoAnimal
 

@@ -1,20 +1,23 @@
 class animales:
-    def __init__(self, id, nombre, tipoHabitat, edad, alimentacion, horasDormir):
+    def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura):
         self.id = id
         self.nombre = nombre
-        self.tipoHabitat = tipoHabitat
+        self.habitat = habitat
         self.edad = edad
-        self.alimentacion = alimentacion
+        self.dieta = dieta
         self. horasDormir = horasDormir
+        self.temperatura = temperatura
 
-    def imprimirAnimal(self):
+    def imprimirAnimales(self):
         print("Nombre: ", self.nombre)
-        print("Habitat: ", self.tipoHabitat)
+        print("Habitat: ", self.habitat)
 
-    def imprimirAnimalesInfo(self):
+    def imprimirAnimalInfo(self):
         print("Id: ", self.id)
         print("Nombre: ", self.nombre)
-        print("Habitat: ", self.tipoHabitat)
+        print("Habitat: ", self.habitat)
         print("Edad: ", self.edad)
-        print("Alimentacion: ", self.alimentacion)
+        print("Alimentacion: ", self.dieta)
         print("Horas de dormir: ", self.horasDormir)
+        print("Temperatura del animal: ", self.temperatura)
+
