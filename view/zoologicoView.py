@@ -1,16 +1,16 @@
 import model.habitat as habitatModel
 import controller.zoologicoController as ZoologicoController
 import model.zoologico as zoologicoModel
-import controller.habitatController as HabitatController
 import model.animales as animalesModel
 
 class zoologicoView:
+
+    def __init__(self):
+        self.zoologico = zoologicoModel.zoologico()
+        self.controlador = ZoologicoController.zoologicoController(self.zoologico, self)
+
     def mostrarMenu(self):
         print("Bienvenido al Zoologico de Cali")
-        zoologico = zoologicoModel.zoologico()
-        habitat = habitatModel.habitat(None,None,None,None)
-        controlador2 = HabitatController.habitatController(habitat,self)
-        controlador = ZoologicoController.zoologicoController(zoologico, self)
         while True:
             print("\n\t**** Bienvenido al Zoologico de Cali ****\n")
             print("1. Agregar habitat al zoologico")
@@ -24,15 +24,19 @@ class zoologicoView:
             opcion = int(input("Por favor ingrese una opción: "))
 
             if opcion == 1:
-                controlador.ejecutarOpcionHabitat(opcion)
+                self.controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 2:
-                controlador.ejecutarOpcionHabitat(opcion)
+                self.controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 3:
-                controlador.ejecutarOpcionHabitat(opcion)
+                self.controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 4:
-                controlador2.ejecutarOpcionAnimales(opcion)
+                self.controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 5:
-                controlador2.ejecutarOpcionAnimales(opcion)
+                self.controlador.ejecutarOpcionHabitat(opcion)
+            elif opcion == 6:
+                self.controlador.ejecutarOpcionHabitat(opcion)
+            elif opcion == 7:
+                self.controlador.ejecutarOpcionHabitat(opcion)
             elif opcion == 8:
                 print("Muchas gracias por visitarnos")
                 break
@@ -58,7 +62,7 @@ class zoologicoView:
             else:
                 bandera = 0
         print("-> desertico: 30° - 40°\n""-> selvatico: 10° - 20°\n" "-> polar: -20° - -5°\n" "-> acuatico: 2° - 8°\n")
-        temperatura = int(input("Escribe la temperatura del habitat: "))
+        temperatura = int(input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla: "))
         while(bandera == 0):
             if (habitat == "desertico" and (temperatura < 30 or temperatura > 40)):
                 print("Escribe nuevamente la temperatura")
@@ -139,6 +143,15 @@ class zoologicoView:
                 horasDormir = int(input("Escribe las horas de dormir del animal: "))
             else:
                 bandera = 1
-        nuevoAnimal = animalesModel.animales(id,nombre,habitat,edad,dieta,horasDormir,temperatura)
+        nuevoAnimal = animalesModel.animales(id,nombre,habitat,edad,dieta,horasDormir,temperatura,1,0)
         return nuevoAnimal
+
+    def opcionAuxiliar1(self):
+        id = int(input("Indique el id del animal: "))
+        return id
+    def opcionAuxiliar2(self):
+        tipoHabitat = input("Indique el habitat del animal: ")
+        return tipoHabitat
+
+
 

@@ -1,4 +1,3 @@
-import controller.habitatController as HabitatController
 class zoologico:
     def __init__(self):
         self.habitats = []
@@ -25,6 +24,34 @@ class zoologico:
 
 
     def mostrarHabitats(self):
-        print("Listado de habitats:\n")
+        if self.habitats:
+            print("Listado de habitats del Zoologico:\n")
+            for habitat in self.habitats:
+                habitat.imprimirHabitat()
+        else:
+            print("No hay habitats disponibles en el zoologico")
+
+    def mostrarAnimalesGeneral(self):
+        if self.habitats:
+            print("\tListado de animales Zoo de Cali")
+            for habitat in self.habitats:
+                habitat.mostrarAnimales()
+        else:
+            print("No hay habitats disponibles en el zoologico, entonces, no existe ningun animal")
+
+
+    def buscarAnimal(self, id, tipoHabitat, opcion):
+        bandera = 0
         for habitat in self.habitats:
-            habitat.imprimirHabitat()
+            if(habitat.habitat == tipoHabitat):
+                if(opcion == 5):
+                    habitat.mostrarAnimalInfo(id)
+                elif (opcion == 6):
+                    habitat.dietaVectoresAnimales(id)
+                else:
+                    habitat.interactuarAnimal(id)
+                bandera = 1
+
+        if(bandera == 0):
+            print("No existe tal habitat, por lo tanto tampoco el animal")
+
