@@ -1,6 +1,6 @@
 from random import randint
 class animales:
-    def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar):
+    def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar, atributoHabitat1, atributoHabitat2):
         self.id = id
         self.nombre = nombre
         self.habitat = habitat
@@ -10,6 +10,8 @@ class animales:
         self.temperatura = temperatura
         self.estadoActivo = estadoActivo
         self.estadoJugar = estadoJugar
+        self.atributoHabitat1 = atributoHabitat1
+        self.atributoHabitat2 = atributoHabitat2
         self.arregloCarnivoro = ["carne", "pescado", "pechuga", "gusanos", "ave", "huevos"]
         self.arregloHerbivoro = ["hierbas", "hojas", "savia", "raices", "semillas", "flores"]
         self.arregloOmnivoro = ["frutas", "carne", "vegetales", "plantas", "pescado", "verduras"]
@@ -24,6 +26,7 @@ class animales:
                 i += 1
         else:
             print("Por el momento no tiene dieta :(")
+
 
 
     def mostrarDietasDisponibles(self, dieta):

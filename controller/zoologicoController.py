@@ -8,20 +8,23 @@ class zoologicoController:
             self.modelo.agregarHabitat(habitat)
         elif opcion == 2:
             animales = self.vista.menuCrearAnimales()
-            self.modelo.ingresarAnimal(animales)
+            self.modelo.verificarTemperatura(animales)
         elif opcion == 3:
             self.modelo.mostrarHabitats()
         elif opcion == 4:
             self.modelo.mostrarAnimalesGeneral()
         elif opcion == 5:
+            self.modelo.mostrarAnimalesGeneral()
             aux2 = self.vista.opcionAuxiliar2()
             aux1 = self.vista.opcionAuxiliar1()
             self.modelo.buscarAnimal(aux1,aux2,5)
         elif opcion == 6:
+            self.modelo.mostrarAnimalesGeneral()
             aux2 = self.vista.opcionAuxiliar2()
             aux1 = self.vista.opcionAuxiliar1()
             self.modelo.buscarAnimal(aux1,aux2,6)
         elif opcion == 7:
+            self.modelo.mostrarAnimalesGeneral()
             aux2 = self.vista.opcionAuxiliar2()
             aux1 = self.vista.opcionAuxiliar1()
             self.modelo.buscarAnimal(aux1,aux2,7)

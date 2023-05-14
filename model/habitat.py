@@ -1,9 +1,10 @@
 class habitat:
-    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta):
+    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales):
         self.habitat = tipoHabitat
         self.numAnimales = numAnimales
         self.temperatura = temperatura
         self.dieta = dieta
+        self.contadorAnimales = contadorAnimales
         self.animales = []
 
 
@@ -12,30 +13,33 @@ class habitat:
         print("Capacidad maxima: ",self.numAnimales)
         print("Temperatura: ",self.temperatura)
         print("Dieta: ",self.dieta)
-        print("\n")
 
     def agregarAnimales(self, nuevoAnimal):
         bandera = 0
+        self.contadorAnimales += 1
         for animales in self.animales:
             if animales.id == nuevoAnimal.id:
-                bandera = 1
                 print("No es posible agregar el animal por el id escrito")
+                bandera = 1
+            elif self.contadorAnimales > self.numAnimales:
+                print("No es posible agregar ya que no hay disponiblidad")
+                bandera = 1
 
         if (bandera == 0):
             self.animales.append(nuevoAnimal)
             print("Se agrego el animal correctamente")
 
     def mostrarAnimales(self):
-        if self.animales:
-            for animales in self.animales:
+        for animales in self.animales:
+            if self.animales:
                 print("-------------------------")
                 print("id: ", animales.id)
                 print("Nombre: ", animales.nombre)
                 print("Habitat: ", animales.habitat)
                 print("-------------------------")
 
-        else:
-            print("No hay animales por el momento")
+            else:
+                print("No hay animales por el momento")
 
     def mostrarAnimalInfo(self,id):
         bandera = 0
@@ -126,16 +130,19 @@ class habitat:
                     elif animales.estadoJugar == 1:
                         print("El animal ya ha jugado. Desea jugar con él?")
                         print("->[1]. Si\n" "->[2]. No\n")
-                        accion = int(input("Escoja su opcion"))
+                        accion = int(input("Escoja su opcion: "))
                         while banderaVerificacion == 1:
-                           if accion != 1 or accion != 2:
-                               accion = int(input("Escoja su opcion"))
+                            if (accion < 1 or accion > 2):
+                                accion = int(input("Escoja su opcion: "))
+                            else:
+                                banderaVerificacion = 0
                         if accion == 1:
                             animales.jugar()
                         else:
                             animales.estadoJugar = 0
                     else:
                         animales.jugar()
+                        animales.estadoJugar = 1
 
                 elif opcion == 2:
                     if animales.estadoActivo == 0:
@@ -153,3 +160,80 @@ class habitat:
 
         if bandera == 0:
             print("El animal no existe")
+
+
+class desertico(habitat):
+    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, aridez, tormentaArena):
+        super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
+        self.aridez = aridez
+        self.tormentaArena = tormentaArena
+
+    def imprimirHabitat(self):
+        print("-------------------------")
+        super().imprimirHabitat()
+        print("Clima Arido: ", self.aridez)
+        print("Hay tormentas de arena: ", self.tormentaArena)
+        print("-------------------------")
+
+    def mostrarAnimalInfo(self,id):
+        super().mostrarAnimalInfo(id)
+        for animales in self.animales:
+            print("Clima Arido: ", animales.atributoHabitat1)
+            print("Hay tormentas de arena: ", animales.atributoHabitat2)
+
+class acuatico(habitat):
+    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, respiraAgua, nadar):
+        super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
+        self.respiraAgua = respiraAgua
+        self.nadar = nadar
+
+    def imprimirHabitat(self):
+        print("-------------------------")
+        super().imprimirHabitat()
+        print("Se puede respirar bajo el agua: ", self.respiraAgua)
+        print("Se puede nadar: ", self.nadar)
+        print("-------------------------")
+
+    def mostrarAnimalInfo(self,id):
+        super().mostrarAnimalInfo(id)
+        for animales in self.animales:
+            print("Puede respirar bajo el agua: ", animales.atributoHabitat1)
+            print("Puede nadar: ", animales.atributoHabitat2)
+
+class polar(habitat):
+    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, clima, escasaVegetacion):
+        super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
+        self.clima = clima
+        self.escasaVegetacion = escasaVegetacion
+
+    def imprimirHabitat(self):
+        print("-------------------------")
+        super().imprimirHabitat()
+        print("Clima de baja temperatura: ", self.clima)
+        print("Tiene escasa vegetacion: ", self.escasaVegetacion)
+        print("-------------------------")
+
+    def mostrarAnimalInfo(self,id):
+        super().mostrarAnimalInfo(id)
+        for animales in self.animales:
+            print("Soporta extremas temperaturas: ", animales.atributoHabitat1)
+            print("Soporta un ecosistema con escasa vegetacion: ", animales.atributoHabitat2)
+
+class selvatico(habitat):
+    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, climaSelvatico, diversidad):
+        super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
+        self.climaSelvatico = climaSelvatico
+        self.diversidad = diversidad
+
+    def imprimirHabitat(self):
+        print("-------------------------")
+        super().imprimirHabitat()
+        print("Clima calido y humedo: ", self.climaSelvatico)
+        print("Tiene mucha diversidad biologica: ", self.diversidad)
+        print("-------------------------")
+
+    def mostrarAnimalInfo(self,id):
+        super().mostrarAnimalInfo(id)
+        for animales in self.animales:
+            print("Soporta el clima calido y humedo: ", animales.atributoHabitat1)
+            print("Soporta la densa vegetacion y la diversidad biologica: ", animales.atributoHabitat2)
