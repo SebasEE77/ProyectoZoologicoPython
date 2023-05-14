@@ -93,22 +93,20 @@ class zoologicoView:
             print("\nTeniendo en cuenta que el habitat es desertico, se le atribuyen caracteristicas, "
                   "siendo un clima arido y un lugar donde hay tormentas de arena.\n")
             nuevaHabitat = habitatModel.desertico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-            return nuevaHabitat
         elif habitat == "acuatico":
             print("\nTeniendo en cuenta que el habitat es acuatico, se le atribuyen caracteristicas, "
                   "siendo que se debe respirar bajo el agua y ser capaz de nadar.\n")
             nuevaHabitat = habitatModel.acuatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-            return nuevaHabitat
         elif habitat == "polar":
             print("\nTeniendo en cuenta que el habitat es polar, se le atribuyen caracteristicas, "
                   "siendo un clima con hielo y nieve y un lugar con escasa vegetacion.\n")
             nuevaHabitat = habitatModel.polar(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-            return nuevaHabitat
         else:
             print("\nTeniendo en cuenta que el habitat es selvatico, se le atribuyen caracteristicas, "
                   "siendo un clima calido y humedo y un lugar con mucha diversidad biologica.\n")
             nuevaHabitat = habitatModel.selvatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-            return nuevaHabitat
+
+        return nuevaHabitat
 
     def menuCrearAnimales(self):
         bandera = 0
@@ -165,7 +163,6 @@ class zoologicoView:
             print("->no")
             tormentaArena = input("Escribe la respuesta: ")
             nuevoAnimal = animalesModel.animales(id,nombre,habitat,edad,dieta,horasDormir,temperatura,1,0,aridez,tormentaArena)
-            return nuevoAnimal
         elif habitat == "acuatico":
             print("El animal puede respirar bajo el agua?")
             print("\n->si")
@@ -177,7 +174,6 @@ class zoologicoView:
             nadar = input("Escribe la respuesta: ")
             nuevoAnimal = animalesModel.animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
                                                  respiraAgua, nadar)
-            return nuevoAnimal
         elif habitat == "polar":
             print("El animal hace parte de un clima de extrema baja temperatura y con mucha nieve?")
             print("\n->si")
@@ -189,7 +185,6 @@ class zoologicoView:
             escasaVegetacion = input("Escribe la respuesta: ")
             nuevoAnimal = animalesModel.animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
                                                  clima, escasaVegetacion)
-            return nuevoAnimal
         else:
             print("El animal hace parte de un clima calido y humedo?")
             print("\n->si")
@@ -201,7 +196,7 @@ class zoologicoView:
             diversidad = input("Escribe la respuesta: ")
             nuevoAnimal = animalesModel.animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
                                                  climaSelvatico, diversidad)
-            return nuevoAnimal
+        return nuevoAnimal
 
     def opcionAuxiliar1(self):
         id = int(input("Indique el id del animal: "))

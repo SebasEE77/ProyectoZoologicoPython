@@ -15,25 +15,25 @@ class zoologico:
     def ingresarAnimal(self, nuevoAnimal):
         bandera = 0
         for habitat in self.habitats:
-            if habitat.habitat == "desertico":
+            if habitat.habitat == "desertico" and nuevoAnimal.habitat == "desertico":
                 for desertico in self.habitats:
                     if desertico.habitat == nuevoAnimal.habitat and desertico.dieta == nuevoAnimal.dieta and \
                             desertico.aridez == nuevoAnimal.atributoHabitat1 and desertico.tormentaArena == nuevoAnimal.atributoHabitat2:
                         bandera = 1
                         habitat.agregarAnimales(nuevoAnimal)
-            elif habitat.habitat == "acuatico":
+            elif habitat.habitat == "acuatico" and nuevoAnimal.habitat == "acuatico":
                 for acuatico in self.habitats:
                     if acuatico.habitat == nuevoAnimal.habitat and acuatico.dieta == nuevoAnimal.dieta and \
                             acuatico.respiraAgua == nuevoAnimal.atributoHabitat1 and acuatico.nadar == nuevoAnimal.atributoHabitat2:
                         bandera = 1
                         habitat.agregarAnimales(nuevoAnimal)
-            elif habitat.habitat == "polar":
+            elif habitat.habitat == "polar" and nuevoAnimal.habitat == "polar":
                 for polar in self.habitats:
                     if polar.habitat == nuevoAnimal.habitat and polar.dieta == nuevoAnimal.dieta and \
                             polar.clima == nuevoAnimal.atributoHabitat1 and polar.escasaVegetacion == nuevoAnimal.atributoHabitat2:
                         bandera = 1
                         habitat.agregarAnimales(nuevoAnimal)
-            else:
+            elif habitat.habitat == "selvatico" and nuevoAnimal.habitat == "selvatico":
                 for selvatico in self.habitats:
                     if selvatico.habitat == nuevoAnimal.habitat and selvatico.dieta == nuevoAnimal.dieta and \
                             selvatico.climaSelvatico == nuevoAnimal.atributoHabitat1 and selvatico.diversidad == nuevoAnimal.atributoHabitat2:
@@ -46,19 +46,18 @@ class zoologico:
 
     def verificarTemperatura(self, nuevoAnimal):
         bandera = 0
-        for habitat in self.habitats:
-            if (habitat.habitat == "desertico" and (nuevoAnimal.temperatura < 30 or nuevoAnimal.temperatura > 40)):
-                bandera = 1
-                print("No se puede agregar el animal por la temperatura ingresada")
-            elif (habitat.habitat == "selvatico" and (nuevoAnimal.temperatura < 10 or nuevoAnimal.temperatura > 20)):
-                bandera = 1
-                print("No se puede agregar el animal por la temperatura ingresada")
-            elif (habitat.habitat == "polar" and (nuevoAnimal.temperatura < -20 or nuevoAnimal.temperatura > -5)):
-                bandera = 1
-                print("No se puede agregar el animal por la temperatura ingresada")
-            elif (habitat.habitat == "acuatico" and (nuevoAnimal.temperatura < 2 or nuevoAnimal.temperatura > 8)):
-                bandera = 1
-                print("No se puede agregar el animal por la temperatura ingresada")
+        if (nuevoAnimal.habitat == "desertico" and (nuevoAnimal.temperatura < 30 or nuevoAnimal.temperatura > 40)):
+            bandera = 1
+            print("No se puede agregar el animal por la temperatura ingresadaa")
+        elif (nuevoAnimal.habitat == "selvatico" and (nuevoAnimal.temperatura < 10 or nuevoAnimal.temperatura > 20)):
+            bandera = 1
+            print("No se puede agregar el animal por la temperatura ingresadab")
+        elif (nuevoAnimal.habitat == "polar" and (nuevoAnimal.temperatura < -20 or nuevoAnimal.temperatura > -5)):
+            bandera = 1
+            print("No se puede agregar el animal por la temperatura ingresadac")
+        elif (nuevoAnimal.habitat == "acuatico" and (nuevoAnimal.temperatura < 2 or nuevoAnimal.temperatura > 8)):
+            bandera = 1
+            print("No se puede agregar el animal por la temperatura ingresada")
 
         if bandera == 0:
             self.ingresarAnimal(nuevoAnimal)
