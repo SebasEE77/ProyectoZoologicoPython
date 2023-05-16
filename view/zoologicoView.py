@@ -3,6 +3,7 @@ import controller.zoologicoController as ZoologicoController
 import model.zoologico as zoologicoModel
 import model.animales as animalesModel
 
+## Esta clase se crea específicamente para mostrar el menu y se llamar los respectivos metodos desde el controlador.
 class zoologicoView:
 
     def __init__(self):
@@ -42,7 +43,8 @@ class zoologicoView:
                 break
 
 
-
+##Creamos una función que pide por consola el nombre y varias características del hábitat a crear y luego verificamos que sea el correcto. Esta función se implementa
+##en el view debido a que manejamos información para crear los hábitats. Al final se retorna el hábitat creado para guardar la información en la lista
     def menuCrearHabitat(self):
         print("Hola usuario, estas son las opciones para agregar habitats\n")
         print("\t->Habitats para agregar<-")
@@ -107,6 +109,9 @@ class zoologicoView:
             nuevaHabitat = habitatModel.selvatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
 
         return nuevaHabitat
+
+##Creamos una función que pide por consola las distintas características del animal que se va agregar en el hábitat. Esta función se implementa
+##en el view debido a que manejamos información para crear los animales. Al final se retorna el hábitat creado para guardar la información en una lista vacía
 
     def menuCrearAnimales(self):
         bandera = 0
@@ -198,6 +203,7 @@ class zoologicoView:
                                                  climaSelvatico, diversidad)
         return nuevoAnimal
 
+## Estos dos métodos son auxiliares para poder verificar si realmente el animal exite pidiendo el id y el hábitat.
     def opcionAuxiliar1(self):
         id = int(input("Indique el id del animal: "))
         return id

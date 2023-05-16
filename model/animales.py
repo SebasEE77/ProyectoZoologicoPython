@@ -17,6 +17,7 @@ class animales:
         self.arregloOmnivoro = ["frutas", "carne", "vegetales", "plantas", "pescado", "verduras"]
         self.vectorDieta = []
 
+## Aquí muestra las comidas dentro de la lista dieta del animal.
     def mostrarDietaAnimal(self):
         i = 0
         if self.vectorDieta:
@@ -28,7 +29,8 @@ class animales:
             print("Por el momento no tiene dieta :(")
 
 
-
+## Este metodo se encarga de mostrar las posible comidas para el animal de acuerdo a su dieta, las cuales
+## están dentro determinadas dentro de arreglos.
     def mostrarDietasDisponibles(self, dieta):
         print("\t->Para el animal esta disponible la siguiente dieta<-")
         i = 0
@@ -45,6 +47,8 @@ class animales:
                 print("- ", self.arregloOmnivoro[i])
                 i += 1
 
+## Este metodo verificar que la comida que se pase como parametro este dentro de la opciones de dieta, y que esté
+## en los arreglos de los 3 tipos de dieta.
     def verificarComida(self,comida):
         bandera = 0
         if comida not in self.vectorDieta:
@@ -57,10 +61,13 @@ class animales:
 
         return bandera
 
+## Este método se encarga solo de meter la comida dentro de la lista dieta del animal.
     def agregarComida(self, comida):
         self.vectorDieta.append(comida)
         print("Se agrego la comida!\n")
 
+## Este método se encarga de lo relacionado a cambiar la dieta del animal, por eso se recibe como parametro
+## una comida y una acción que significa si se quiere cambiar o eliminar de la dieta.
     def modificarDieta(self, accion, comida):
         bandera = 0
         i = 0
@@ -86,7 +93,8 @@ class animales:
             print("Accion valida!")
 
 
-
+## Este método es el que se encarga de que el usuario interactué con un animal en
+## específico jugando a adivinar un número aleatorio.
     def jugar(self):
         intentos = 3
         num = -1
@@ -104,7 +112,8 @@ class animales:
         if intentos == 0:
             print("El animal esta triste, no ganaste")
 
-
+## Este metodo se encarga de darle de comer al animal de acuerdo a la acción escogida por el usuario. Se muestra la dieta del animal
+## y se escoge la que haya disponible.
     def comer(self):
         bandera = 0
         if self.vectorDieta:
@@ -121,6 +130,8 @@ class animales:
         else:
             print("Lo sentimos pero no tienes nada agregado en la dieta del animal")
 
+## Este metodo se encarga de mandar al animal a dormir si se especifica el número de horas exacta escritas
+## a la hora de crear el animal.
     def dormir(self):
         horas = -1
         while horas != self.horasDormir:

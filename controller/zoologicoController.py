@@ -2,6 +2,8 @@ class zoologicoController:
     def __init__(self, modelo, vista):
         self.modelo = modelo
         self.vista = vista
+
+## Este es el controlador del programa. Es con base a la clase zoológico ya que desde ahí se maneja la mayoría de las cosas.
     def ejecutarOpcionHabitat(self, opcion):
         if opcion == 1:
             habitat = self.vista.menuCrearHabitat()

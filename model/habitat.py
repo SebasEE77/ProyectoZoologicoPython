@@ -7,28 +7,33 @@ class habitat:
         self.contadorAnimales = contadorAnimales
         self.animales = []
 
-
+## Este metodo solamente muestra la información de los hábitats que existen en el zoológico
     def imprimirHabitat(self):
         print("Habitat: ",self.habitat)
         print("Capacidad maxima: ",self.numAnimales)
         print("Temperatura: ",self.temperatura)
         print("Dieta: ",self.dieta)
 
+## Este metodo agrega los animales a la lista animales teniendo en cuenta las características recibidas
+## en el método de ingresarAnimal de zoologico.
     def agregarAnimales(self, nuevoAnimal):
         bandera = 0
         self.contadorAnimales += 1
         for animales in self.animales:
             if animales.id == nuevoAnimal.id:
+                bandera = 1
                 print("No es posible agregar el animal por el id escrito")
-                bandera = 1
-            elif self.contadorAnimales > self.numAnimales:
-                print("No es posible agregar ya que no hay disponiblidad")
-                bandera = 1
+
+        if self.contadorAnimales > self.numAnimales:
+            bandera = 1
+            print("No es posible agregar ya que no hay disponiblidad")
 
         if (bandera == 0):
             self.animales.append(nuevoAnimal)
             print("Se agrego el animal correctamente")
 
+## Este método lo que hace es listar los animales dentro de la lista animales mostrando su id, nombre y tipo de hábitat,
+## además, si no existe ningun animal se muestra el mensaje indicando que no existen.
     def mostrarAnimales(self):
         for animales in self.animales:
             if self.animales:
@@ -41,6 +46,9 @@ class habitat:
             else:
                 print("No hay animales por el momento")
 
+
+## Este método se encarga de mostrar la información completa del animal de acuerdo al id pasado como parametro de la función. Aquí se busca
+## dentro de la lista animales del habitat que encuentra buscarAnimal de la clase zoologico.
     def mostrarAnimalInfo(self,id):
         bandera = 0
         for animales in self.animales:
@@ -58,8 +66,8 @@ class habitat:
         if bandera == 0:
             print("El animal no pertenece al zoologico")
 
-
-
+## Este metodo lo que se encarga es de buscar al animal dentro de la lista animales de acuerdo a su id para de tal modo gestionar la dieta del animal,
+## ya sea agregar una comida, cambiarla por otra o eliminarla de su dieta.
     def dietaVectoresAnimales(self,id):
         bandera = 0
         banderaVerificacion = 0
@@ -110,7 +118,8 @@ class habitat:
         if(bandera == 0):
             print("El animal indicado no existe\n")
 
-
+## Este metodo se encargara de buscar al animal dentro del hábitat de acuerdo al id mandado como parametro. Luego pedira al usuario que escoga
+## una opción para interactuar con el animal, ya sea jugar, dormir o comer.
     def interactuarAnimal(self, id):
         bandera = 0
         banderaVerificacion = 0
@@ -162,6 +171,9 @@ class habitat:
             print("El animal no existe")
 
 
+## Apartir de aquí están las clases hijas de la clase hábitat las cuales tienen 2 atributos únicos que los diferencian
+## de las demás hábitats del zoológico. Cada una tiene un imprimirHabitat y un imprimirAnimales que lo que hacen es añadir
+## información extra a esos métodos.
 class desertico(habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, aridez, tormentaArena):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
