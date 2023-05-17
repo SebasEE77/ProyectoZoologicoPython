@@ -4,15 +4,15 @@ class zoologicoController:
         self.vista = vista
 
 ## Este es el controlador del programa. Es con base a la clase zoológico ya que desde ahí se maneja la mayoría de las cosas.
-    def ejecutarOpcionHabitat(self, opcion):
+    def ejecutarOpcion(self, opcion):
         if opcion == 1:
             habitat = self.vista.menuCrearHabitat()
             self.modelo.agregarHabitat(habitat)
         elif opcion == 2:
             animales = self.vista.menuCrearAnimales()
-            self.modelo.verificarTemperatura(animales)
+            self.modelo.ingresarAnimal(animales)
         elif opcion == 3:
-            self.modelo.mostrarHabitats()
+            self.vista.mostrarHabitats(self.modelo.habitats)
         elif opcion == 4:
             self.modelo.mostrarAnimalesGeneral()
         elif opcion == 5:
@@ -31,4 +31,8 @@ class zoologicoController:
             aux1 = self.vista.opcionAuxiliar1()
             self.modelo.buscarAnimal(aux1,aux2,7)
 
-
+    def aplicarTabla(self, habitats):
+        datos = []
+        for habitat in habitats:
+            datos.append([habitat.habitat, habitat.numAnimales, habitat.temperatura, habitat.dieta])
+        return datos
