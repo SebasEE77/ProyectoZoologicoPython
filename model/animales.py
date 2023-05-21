@@ -1,9 +1,9 @@
 from random import randint
-class animales:
+class Animales:
     def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar, atributoHabitat1, atributoHabitat2):
         self.id = id
         self.nombre = nombre
-        self.habitat = habitat
+        self.tipoHabitat = habitat
         self.edad = edad
         self.dieta = dieta
         self. horasDormir = horasDormir

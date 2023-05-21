@@ -1,6 +1,6 @@
-class habitat:
-    def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales):
-        self.habitat = tipoHabitat
+class Habitat:
+    def __init__(self, habitat, numAnimales, temperatura,dieta,contadorAnimales):
+        self.habitat = habitat
         self.numAnimales = numAnimales
         self.temperatura = temperatura
         self.dieta = dieta
@@ -174,7 +174,7 @@ class habitat:
 ## Apartir de aquí están las clases hijas de la clase hábitat las cuales tienen 2 atributos únicos que los diferencian
 ## de las demás hábitats del zoológico. Cada una tiene un imprimirHabitat y un imprimirAnimales que lo que hacen es añadir
 ## información extra a esos métodos.
-class desertico(habitat):
+class desertico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, aridez, tormentaArena):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.aridez = aridez
@@ -193,7 +193,7 @@ class desertico(habitat):
             print("Clima Arido: ", animales.atributoHabitat1)
             print("Hay tormentas de arena: ", animales.atributoHabitat2)
 
-class acuatico(habitat):
+class acuatico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, respiraAgua, nadar):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.respiraAgua = respiraAgua
@@ -212,7 +212,7 @@ class acuatico(habitat):
             print("Puede respirar bajo el agua: ", animales.atributoHabitat1)
             print("Puede nadar: ", animales.atributoHabitat2)
 
-class polar(habitat):
+class polar(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, clima, escasaVegetacion):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.clima = clima
@@ -231,7 +231,7 @@ class polar(habitat):
             print("Soporta extremas temperaturas: ", animales.atributoHabitat1)
             print("Soporta un ecosistema con escasa vegetacion: ", animales.atributoHabitat2)
 
-class selvatico(habitat):
+class selvatico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, climaSelvatico, diversidad):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.climaSelvatico = climaSelvatico

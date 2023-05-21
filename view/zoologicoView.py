@@ -9,11 +9,11 @@ import pandas as pd
 class zoologicoView:
 
     def __init__(self):
-        self.zoologico = zoologicoModel.zoologico()
+        self.zoologico = zoologicoModel.Zoologico()
         self.controlador = ZoologicoController.zoologicoController(self.zoologico, self)
 
     def mostrarMenu(self):
-        pages = ["Inicio" ,"Agregar Habitat", "Agregar Animales", "Ver lista de Hábitats", "Ver lista de Animales"]
+        pages = ["Inicio" ,"Agregar Habitat", "Agregar Animal a un Zoológico", "Agregar animal a un Hábitat", "Ver lista de Hábitats", "Ver lista de Animales del Zoológico"]
         selection = st.sidebar.radio("Selecciona una opción del menú", pages)
 
         if selection == "Inicio":
@@ -29,34 +29,33 @@ class zoologicoView:
             botonAgregarHabitat = st.button("Agregar",1)
             if botonAgregarHabitat:
                 st.session_state["opcion"] = 1
-            if "opcion" in st.session_state:
-                self.controlador.ejecutarOpcion(st.session_state["opcion"])
 
-        elif selection == "Agregar Animales":
+        elif selection == "Agregar Animal a un Zoológico":
             st.title("Agregar Animal al Zoológico")
             botonAgregarAnimal = st.button("Agregar", 2)
             if botonAgregarAnimal:
                 st.session_state["opcion"] = 2
-            if "opcion" in st.session_state:
-                self.controlador.ejecutarOpcion(st.session_state["opcion"])
+
+        elif selection == "Agregar animal a un Hábitat":
+            st.title("Agregar Animales a una Hábitat")
+            st.session_state["opcion"] = 3
 
         elif selection == "Ver lista de Hábitats":
             st.title("Lista de Hábitats")
-            botonListaHabitats = st.button("Ver lista Hábitats", 3)
+            botonListaHabitats = st.button("Ver lista Hábitats", 4)
             if botonListaHabitats:
-                st.session_state["opcion"] = 3
-            if "opcion" in st.session_state:
-                self.controlador.ejecutarOpcion(st.session_state["opcion"])
-
-        elif selection == "Ver lista de Animales":
-            st.title("Lista de Animales en General")
-            botonListaAnimalesgeneral = st.button("Ver lista completa de animales",4)
-            if botonListaAnimalesgeneral:
                 st.session_state["opcion"] = 4
-            if "opcion" in st.session_state:
-                self.controlador.ejecutarOpcion(st.session_state["opcion"])
 
-##Creamos una función que pide por consola el nombre y varias características del hábitat a crear y luego verificamos que sea el correcto. Esta función se implementa
+        elif selection == "Ver lista de Animales del Zoológico":
+            st.title("Lista de Animales en General")
+            botonListaAnimalesgeneral = st.button("Ver lista completa de animales",5)
+            if botonListaAnimalesgeneral:
+                st.session_state["opcion"] = 5
+
+        if "opcion" in st.session_state:
+            self.controlador.ejecutarOpcion(st.session_state["opcion"])
+
+    ##Creamos una función que pide por consola el nombre y varias características del hábitat a crear y luego verificamos que sea el correcto. Esta función se implementa
 ##en el view debido a que manejamos información para crear los hábitats. Al final se retorna el hábitat creado para guardar la información en la lista
     def menuCrearHabitat(self):
         st.divider()
@@ -70,7 +69,7 @@ class zoologicoView:
             habitat = st.selectbox(
                 "Escoge el habitat que desea agregar:",
                 ("desertico", "selvatico", "polar", "acuatico"))
-            numAnimales = st.number_input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat):", min_value=1, max_value=4)
+            numAnimales = st.number_input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat):", min_value=1, max_value=4,key=6)
             st.subheader("\t->Rangos de temperatura<-")
             st.write("-> desertico: 30° -> 40°")
             st.write("-> selvatico: 10° -> 20°")
@@ -93,34 +92,30 @@ class zoologicoView:
                 ("carnivoro", "herbivoro", "omnivoro"))
 
             botonAccionHabitat = st.button("Crear Habitat")
-
-        if botonAccionHabitat:
-            if habitat == "desertico":
-                st.write("\nTeniendo en cuenta que el habitat es desertico, se le atribuyen caracteristicas, "
-                      "siendo un clima arido y un lugar donde hay tormentas de arena.\n")
-                nuevaHabitat = habitatModel.desertico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-                st.success("El habitat fue creado")
-            elif habitat == "polar":
-                st.write("\nTeniendo en cuenta que el habitat es polar, se le atribuyen caracteristicas, "
-                      "siendo un clima con hielo y nieve y un lugar con escasa vegetacion.\n")
-                nuevaHabitat = habitatModel.polar(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-                st.success("El habitat fue creado")
-            elif habitat == "acuatico":
-                st.write("\nTeniendo en cuenta que el habitat es acuatico, se le atribuyen caracteristicas, "
-                      "siendo que se debe respirar bajo el agua y ser capaz de nadar.\n")
-                nuevaHabitat = habitatModel.acuatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-                st.success("El habitat fue creado")
-            else:
-                st.write("\nTeniendo en cuenta que el habitat es selvatico, se le atribuyen caracteristicas, "
-                      "siendo un clima calido y humedo y un lugar con mucha diversidad biologica.\n")
-                nuevaHabitat = habitatModel.selvatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
-                st.success("El habitat fue creado")
-            return nuevaHabitat
+            if botonAccionHabitat:
+                if habitat == "desertico":
+                    st.write("\nTeniendo en cuenta que el habitat es desertico, se le atribuyen caracteristicas, "
+                          "siendo un clima arido y un lugar donde hay tormentas de arena.\n")
+                    nuevaHabitat = habitatModel.desertico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
+                elif habitat == "polar":
+                    st.write("\nTeniendo en cuenta que el habitat es polar, se le atribuyen caracteristicas, "
+                          "siendo un clima con hielo y nieve y un lugar con escasa vegetacion.\n")
+                    nuevaHabitat = habitatModel.polar(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
+                elif habitat == "acuatico":
+                    st.write("\nTeniendo en cuenta que el habitat es acuatico, se le atribuyen caracteristicas, "
+                          "siendo que se debe respirar bajo el agua y ser capaz de nadar.\n")
+                    nuevaHabitat = habitatModel.acuatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
+                else:
+                    st.write("\nTeniendo en cuenta que el habitat es selvatico, se le atribuyen caracteristicas, "
+                          "siendo un clima calido y humedo y un lugar con mucha diversidad biologica.\n")
+                    nuevaHabitat = habitatModel.selvatico(habitat, numAnimales, temperatura, dietaAnimal, 0, "si", "si")
+                return nuevaHabitat
 
 ##Creamos una función que pide por consola las distintas características del animal que se va agregar en el hábitat. Esta función se implementa
 ##en el view debido a que manejamos información para crear los animales. Al final se retorna el hábitat creado para guardar la información en una lista vacía
 
     def menuCrearAnimales(self):
+        animal = self.zoologico.animalesGuardados
         st.divider()
         st.subheader("Hola usuario, escribe las caracteristicas del animal que quieres crear\n")
         id = st.number_input("Escribe el id del animal:", min_value=1,max_value=1000000000)
@@ -149,64 +144,85 @@ class zoologicoView:
         temperatura = st.number_input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla:",
                                       min_value=-20, max_value=40)
         horasDormir = st.number_input("Escribe las horas de dormir del animal:", min_value=5, max_value=20)
-        st.write("\nA continuacion se realizara dos preguntas cerradas para saber si el animal "
-              "esta en condiciones del habitat seleccionado, \nsi escribe 'si' en ambas es porque esta en condiciones, sino no lo esta.")
-        if habitat == "desertico":
-            aridez = st.selectbox(
-                "¿El animal podria vivir en un clima arido?",
-                ("si", "no"))
-            tormentaArena = st.selectbox(
-                "¿El animal soportaria tormentas de arena?",
-                ("si", "no"))
-            botonAccionAnimales = st.button("Crear Animal")
-            if botonAccionAnimales:
-                nuevoAnimal = animalesModel.animales(id,nombre,habitat,edad,dieta,horasDormir,temperatura,1,0,aridez,tormentaArena)
-                st.success("El animal fue creado correctamente")
-                return nuevoAnimal
-        elif habitat == "acuatico":
-            respiraAgua = st.selectbox(
-                "¿El animal puede respirar bajo el agua?",
-                ("si", "no"))
-            nadar = st.selectbox(
-                "¿El animal sabe nadar?",
-                ("si", "no"))
-            botonAccionAnimales = st.button("Crear Animal")
-            if botonAccionAnimales:
-                nuevoAnimal = animalesModel.animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
-                                                 respiraAgua, nadar)
-                st.success("El animal fue creado correctamente")
-                return nuevoAnimal
-        elif habitat == "polar":
-            clima = st.selectbox(
-                "¿El animal hace parte de un clima de extrema baja temperatura y con mucha nieve?",
-                ("si", "no"))
-            escasaVegetacion = st.selectbox(
-                "¿El animal soportaria un entorno con escasa vegetacion?",
-                ("si", "no"))
-            botonAccionAnimales = st.button("Crear Animal")
-            if botonAccionAnimales:
-                nuevoAnimal = animalesModel.animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
-                                                 clima, escasaVegetacion)
-                st.success("El animal fue creado correctamente")
-                return nuevoAnimal
-        else:
-            climaSelvatico = st.selectbox(
-                "¿El animal hace parte de un clima calido y humedo?",
-                ("si", "no"))
-            diversidad = st.selectbox(
-                "¿El animal soportaria un entorno de vegetacion densa y con mucha diversidad biologica(arboles,plantas,insectos,animales)?",
-                ("si", "no"))
-            botonAccionAnimales = st.button("Crear Animal")
-            if botonAccionAnimales:
-                nuevoAnimal = animalesModel.animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
-                                                 climaSelvatico, diversidad)
-                st.success("El animal fue creado correctamente")
-                return nuevoAnimal
+        botonAccionAnimales = st.button("Crear Animal")
+        if botonAccionAnimales:
+            nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0, None,
+                                                 None)
+            return nuevoAnimal
+        # st.write("\nA continuacion se realizara dos preguntas cerradas para saber si el animal "
+        #       "esta en condiciones del habitat seleccionado, \nsi escribe 'si' en ambas es porque esta en condiciones, sino no lo esta.")
+
+        # if habitat == "desertico":
+        #     aridez = st.selectbox(
+        #         "¿El animal podria vivir en un clima arido?",
+        #         ("si", "no"))
+        #     tormentaArena = st.selectbox(
+        #         "¿El animal soportaria tormentas de arena?",
+        #         ("si", "no"))
+        #     botonAccionAnimales = st.button("Crear Animal")
+        #     if botonAccionAnimales:
+        #         nuevoAnimal = animalesModel.Animales(id,nombre,habitat,edad,dieta,horasDormir,temperatura,1,0,aridez,tormentaArena)
+        #         st.success("El animal fue creado correctamente")
+        #         return nuevoAnimal
+        # elif habitat == "acuatico":
+        #     respiraAgua = st.selectbox(
+        #         "¿El animal puede respirar bajo el agua?",
+        #         ("si", "no"))
+        #     nadar = st.selectbox(
+        #         "¿El animal sabe nadar?",
+        #         ("si", "no"))
+        #     botonAccionAnimales = st.button("Crear Animal")
+        #     if botonAccionAnimales:
+        #         nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
+        #                                          respiraAgua, nadar)
+        #         st.success("El animal fue creado correctamente")
+        #         return nuevoAnimal
+        # elif habitat == "polar":
+        #     clima = st.selectbox(
+        #         "¿El animal hace parte de un clima de extrema baja temperatura y con mucha nieve?",
+        #         ("si", "no"))
+        #     escasaVegetacion = st.selectbox(
+        #         "¿El animal soportaria un entorno con escasa vegetacion?",
+        #         ("si", "no"))
+        #     botonAccionAnimales = st.button("Crear Animal")
+        #     if botonAccionAnimales:
+        #         nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
+        #                                          clima, escasaVegetacion)
+        #         st.success("El animal fue creado correctamente")
+        #         return nuevoAnimal
+        # else:
+        #     climaSelvatico = st.selectbox(
+        #         "¿El animal hace parte de un clima calido y humedo?",
+        #         ("si", "no"))
+        #     diversidad = st.selectbox(
+        #         "¿El animal soportaria un entorno de vegetacion densa y con mucha diversidad biologica(arboles,plantas,insectos,animales)?",
+        #         ("si", "no"))
+        #     botonAccionAnimales = st.button("Crear Animal")
+        #     if botonAccionAnimales:
+        #         nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0,
+        #                                          climaSelvatico, diversidad)
+        #         st.success("El animal fue creado correctamente")
+        #         return nuevoAnimal
+
+    def buscarAnimal(self, id, animalesGuardados):
+        for animal in animalesGuardados:
+            if animal.id == id:
+                return animal
+
+    def agregarAnimalHabitat(self, animalesGuardados):
+        botonAgregarHabitat = st.button("Agregar a Hábitat")
+        if botonAgregarHabitat:
+            listaAnimal = st.selectbox("Escoge el animal que deseas agregar", animalesGuardados)
+
+        botonAccion = st.button("Agregar")
+
+
 
 ## Este metodo recorre el vector de hábitat dentro de zoológico, mostrando así las hábitats existentes.
     def mostrarHabitats(self, habitats):
         st.divider()
         with st.container():
+            st.subheader("Listado de productos disponibles")
             if len(habitats) == 0:
                 st.error("No existe ningun hábitat")
             else:
@@ -216,6 +232,39 @@ class zoologicoView:
                 )
                 st.table(datos)
 
+    def mostrarAnimalesZoologico(self,animalesGuardados):
+        st.divider()
+        with st.container():
+            st.subheader("Listado de Animales en el Zoológico")
+            for animales in animalesGuardados:
+                if len(animalesGuardados) == 0:
+                    st.error("No existe ningun Animal")
+                else:
+                    if animales.tipoHabitat == "desertico":
+                        datos = pd.DataFrame(
+                            self.controlador.aplicarTablaAnimales(animalesGuardados),
+                            columns=["Id del animal", "Nombre", "Tipo de hábitat", "Edad", "Dieta",
+                                     "Horas de sueño", "Temperatura", "Clima Arido", "Soporta tormentas de arena"]
+                        )
+                        st.table(datos)
+
+    # def agregarAnimalesHabitat(self, animalesGuardados, habitats, nuevoAnimal):
+    #     botonAgregarAnimalesHabitat = st.button("Agregar animal a Hábitat")
+    #     if botonAgregarAnimalesHabitat:
+    #         for habitat in habitats:
+    #             seleccionHabitat = st.selectbox("Escoge el hábitat al que deseas agregar el animal:", habitat.habitat)
+    #             for animales in animalesGuardados:
+    #                 seleccionAnimal = st.selectbox("Escoge el animal:", animales.nombre)
+    #                 botonAgregar = st.button("Agregar Animal")
+    #                 if botonAgregar:
+    #                     if seleccionHabitat == nuevoAnimal.habitat and seleccionAnimal == nuevoAnimal.nombre:
+    #                         habitat.agregarAnimales(nuevoAnimal)
+    #                     else:
+    #                         st.error("No se puede agregar")
+    #
+    #
+
+
 ## Estos dos métodos son auxiliares para poder verificar si realmente el animal exite pidiendo el id y el hábitat.
     def opcionAuxiliar1(self):
         id = int(input("Indique el id del animal: "))
@@ -224,4 +273,5 @@ class zoologicoView:
         tipoHabitat = input("Indique el habitat del animal: ")
         return tipoHabitat
 
-
+    def mostraMensajeError(self, mensaje):
+        st.error(mensaje)
