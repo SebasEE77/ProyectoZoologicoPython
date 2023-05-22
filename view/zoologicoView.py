@@ -199,12 +199,22 @@ class zoologicoView:
             botonAccion = st.button("Agregar")
             if botonAccion:
                 if animalEscogido.dieta == habitatEscogido.dieta and animalEscogido.tipoHabitat == habitatEscogido.habitat:
-                    self.zoologico.eliminarAnimalGuardado(id)
-                    return animalEscogido
+                    verificacion = habitatEscogido.agregarAnimales(animalEscogido)
+                    if verificacion == True:
+                        self.zoologico.eliminarAnimalGuardado(id)
                 else:
                     st.error("La selección no concuerda")
         else:
             st.error("La selección por ahora no concuerda")
+
+    def verificarAnimal(self,animalesGuardados, id):
+        for animales in animalesGuardados:
+            if id == animales.id:
+                return animales
+    def verificarHabitat(self,habitats, habitatSeleccionado):
+        for habitat in habitats:
+            if habitat.habitat == habitatSeleccionado:
+                return habitat
 
     def atributoHabitats(self,habitat):
         st.write("\nA continuacion se realizara dos preguntas cerradas para saber si el animal "
@@ -254,14 +264,7 @@ class zoologicoView:
                 st.success("El animal puede agregarse")
                 bandera = 1
                 return bandera
-    def verificarAnimal(self,animalesGuardados, id):
-        for animales in animalesGuardados:
-            if id == animales.id:
-                return animales
-    def verificarHabitat(self,habitats, habitatSeleccionado):
-        for habitat in habitats:
-            if habitat.habitat == habitatSeleccionado:
-                return habitat
+
 
     ## Este metodo recorre el vector de hábitat dentro de zoológico, mostrando así las hábitats existentes.
     def mostrarHabitats(self, habitats):

@@ -119,6 +119,7 @@ class Animales:
         if self.intentosJugar == 0 and num != aleatorio:
             st.error("Has perdido!, el animal esta triste :(")
             self.estadoJugar = 1
+            self.intentosJugar = 3
 
     ## Este metodo se encarga de darle de comer al animal de acuerdo a la acción escogida por el usuario. Se muestra la dieta del animal
 ## y se escoge la que haya disponible.
@@ -146,5 +147,11 @@ class Animales:
             elif horas < self.horasDormir:
                 st.warning("Son pocas horas para dormir!")
             else:
-                st.success("El animal ya duerme tranquilo")
                 self.estadoActivo = 0
+                st.success("El animal ya duerme tranquilo")
+
+
+    # def estadoAnimal(self):
+    #     if self.estadoActivo == 0:
+    #         self.estadoActivo = 1
+    #         self.estadoJugar = 0

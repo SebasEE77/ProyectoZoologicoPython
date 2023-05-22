@@ -27,7 +27,9 @@ class Habitat:
             st.success("El animal fue agregado correctamente")
             self.animales.append(nuevoAnimal)
             st.session_state["animales"] = self.animales
-    
+            return True
+        return False
+
 
 ## Este método lo que hace es listar los animales dentro de la lista animales mostrando su id, nombre y tipo de hábitat,
 ## además, si no existe ningun animal se muestra el mensaje indicando que no existen.
@@ -44,8 +46,6 @@ class Habitat:
                                  "Horas de sueño", "Temperatura"]
                     )
                     st.table(datos)
-        else:
-            st.error("No hay animales en los hábitats")
 
     def aplicarTablaAnimalesGeneral(self):
         datos = []
@@ -55,7 +55,6 @@ class Habitat:
         return datos
 
     def buscarAnimalAnimales(self):
-        st.divider()
         opcionesAnimales = []
         for animales in self.animales:
             opcionesAnimales.append(animales.id)
@@ -104,7 +103,6 @@ class Habitat:
                     animales.modificarDieta("modificar",comida)
 
 
-
 ## Este metodo se encargara de buscar al animal dentro del hábitat de acuerdo al id mandado como parametro. Luego pedira al usuario que escoga
 ## una opción para interactuar con el animal, ya sea jugar, dormir o comer.
     def interactuarAnimal(self, animalEscogido):
@@ -136,7 +134,6 @@ class Habitat:
                             st.success("Se desperto el animal")
                     else:
                         animales.dormir()
-
 
 
 ## Apartir de aquí están las clases hijas de la clase hábitat las cuales tienen 2 atributos únicos que los diferencian

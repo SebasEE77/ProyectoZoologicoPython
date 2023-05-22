@@ -16,6 +16,8 @@ class Zoologico:
 
 
 
+
+
 ## Este metodo de zoológico recibira la información del hábitat donde se agregará a la lista hábitats si se cumple
 ## la condición de que no exista otro hábitat igual.
     def agregarHabitat(self, nuevHabitat):
@@ -28,23 +30,6 @@ class Zoologico:
             st.success("El hábitat fue creado correctamente")
             self.habitats.append(nuevHabitat)
             st.session_state["habitats"] = self.habitats
-
-    def agregarAnimal_Habitat(self, nuevoAnimal):
-        for habitat in self.habitats:
-            habitat.agregarAnimales(nuevoAnimal)
-
-    def agregarAnimales(self, nuevoAnimal):
-        self.contadorAnimales += 1
-        for animales in self.animales:
-            if animales.id == nuevoAnimal.id:
-                st.error("No se puede agregar ya que el id es el mismo al de otro animal")
-
-        if self.contadorAnimales > self.numAnimales:
-            st.error("No se puede agregar ya que no hay disponibilidad")
-        else:
-            st.success("El animal fue agregado correctamente")
-            self.animales.append(nuevoAnimal)
-            st.session_state["animales"] = self.animales
 
     def ingresarAnimalZoologico(self, nuevoAnimal):
         bandera = 0
@@ -87,16 +72,14 @@ class Zoologico:
         opcionesHabitat = []
         for habitat in self.habitats:
             opcionesHabitat.append(habitat.habitat)
-            animalEscogido = habitat.buscarAnimalAnimales()
-            habitatSeleccionado = st.selectbox("Escoge el hábitat del animal", opcionesHabitat)
-            habitatEscogido = self.verificarHabitat2(self.habitats, habitatSeleccionado)
-            if animalEscogido.tipoHabitat == habitatEscogido.habitat:
-                if opcion == 5:
-                    habitat.dietaVectoresAnimales(animalEscogido)
-                else:
-                    habitat.interactuarAnimal(animalEscogido)
-            else:
-                st.error("El hábitat no concuerda con el animal")
+        habitatSeleccionado = st.selectbox("Escoge el hábitat del animal", opcionesHabitat)
+        habitatEscogido = self.verificarHabitat2(self.habitats, habitatSeleccionado)
+        animalEscogido = habitatEscogido.buscarAnimalAnimales()
+        if opcion == 5:
+            habitatEscogido.dietaVectoresAnimales(animalEscogido)
+        else:
+            habitatEscogido.interactuarAnimal(animalEscogido)
+
 
     def verificarHabitat2(self,habitats, habitatSeleccionado):
         for habitat in habitats:

@@ -21,12 +21,7 @@ class zoologicoController:
             except ValueError:
                 self.vista.mostraMensajeError("Se presentó un error creando el animal")
         if opcion == 3:
-            try:
-                animal = self.vista.agregarAnimalHabitat(self.modelo.animalesGuardados,self.modelo.habitats)
-                if animal:
-                    self.modelo.agregarAnimal_Habitat(animal)
-            except ValueError:
-                self.vista.mostraMensajeError("Se presentó un error creando el animal")
+            self.vista.agregarAnimalHabitat(self.modelo.animalesGuardados,self.modelo.habitats)
         if opcion == 4:
             self.vista.mostrarHabitats(self.modelo.habitats)
         if opcion == 5:
