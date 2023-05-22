@@ -34,6 +34,8 @@ class zoologicoController:
         if opcion == 8:
             self.modelo.mostrarAnimalesGeneral()
             self.modelo.buscarAnimal(6)
+        if opcion == 9:
+            self.vista.llamadoApi()
 
     def aplicarTabla(self, habitats):
         datos = []

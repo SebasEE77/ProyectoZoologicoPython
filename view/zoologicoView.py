@@ -4,7 +4,9 @@ import model.zoologico as zoologicoModel
 import model.animales as animalesModel
 import streamlit as st
 import pandas as pd
-
+import requests
+from PIL import Image
+from io import BytesIO
 ## Esta clase se crea específicamente para mostrar el menu y se llamar los respectivos metodos desde el controlador.
 class zoologicoView:
 
@@ -14,7 +16,8 @@ class zoologicoView:
 
     def mostrarMenu(self):
         pages = ["Inicio" ,"Agregar Habitat", "Agregar Animal a un Zoológico", "Agregar animal a un Hábitat", "Ver lista de Hábitats",
-                 "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales","Interactuar con los animales"]
+                 "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales",
+                 "Interactuar con los animales","Consultar animales en internet"]
         selection = st.sidebar.radio("Selecciona una opción del menú", pages)
 
         if selection == "Inicio":
@@ -72,6 +75,12 @@ class zoologicoView:
             botonAccionAnimal = st.button("Interactuar", 8)
             if botonAccionAnimal:
                 st.session_state["opcion"] = 8
+
+        elif selection == "Consultar animales en internet":
+            st.title("Varias imagenes de Animales")
+            botonApi = st.button("Mirar Imagenes", 9)
+            if botonApi:
+                st.session_state["opcion"] = 9
 
         if "opcion" in st.session_state:
             self.controlador.ejecutarOpcion(st.session_state["opcion"])
@@ -303,3 +312,13 @@ class zoologicoView:
 
     def mostraMensajeError(self, mensaje):
         st.error(mensaje)
+
+    def llamadoApi(self):
+        listaImagenes = ["https://placebear.com/200/300.jpg","https://images.dog.ceo/breeds/basenji/n02110806_4117.jpg",
+                   "https://images.dog.ceo/breeds/ovcharka-caucasian/IMG_20190801_112134.jpg"]
+        for i in range(len(listaImagenes)):
+            imagen = requests.get(listaImagenes[i])
+            image = Image.open((BytesIO(imagen.content)))
+            st.image(image, caption="Imagen de un animal")
+
+
