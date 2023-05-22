@@ -13,7 +13,8 @@ class zoologicoView:
         self.controlador = ZoologicoController.zoologicoController(self.zoologico, self)
 
     def mostrarMenu(self):
-        pages = ["Inicio" ,"Agregar Habitat", "Agregar Animal a un Zoológico", "Agregar animal a un Hábitat", "Ver lista de Hábitats", "Ver lista de Animales del Zoológico"]
+        pages = ["Inicio" ,"Agregar Habitat", "Agregar Animal a un Zoológico", "Agregar animal a un Hábitat", "Ver lista de Hábitats",
+                 "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales"]
         selection = st.sidebar.radio("Selecciona una opción del menú", pages)
 
         if selection == "Inicio":
@@ -38,7 +39,9 @@ class zoologicoView:
 
         elif selection == "Agregar animal a un Hábitat":
             st.title("Agregar Animales a una Hábitat")
-            st.session_state["opcion"] = 3
+            botonAgregarAnimalHabitat = st.button("Agregar a Hábitat",3)
+            if botonAgregarAnimalHabitat:
+                st.session_state["opcion"] = 3
 
         elif selection == "Ver lista de Hábitats":
             st.title("Lista de Hábitats")
@@ -47,10 +50,22 @@ class zoologicoView:
                 st.session_state["opcion"] = 4
 
         elif selection == "Ver lista de Animales del Zoológico":
-            st.title("Lista de Animales en General")
+            st.title("Lista de Animales del Zoológico")
             botonListaAnimalesgeneral = st.button("Ver lista completa de animales",5)
             if botonListaAnimalesgeneral:
                 st.session_state["opcion"] = 5
+
+        elif selection == "Ver lista animales general":
+            st.title("Lista de Animales en General")
+            botonListaAnimalesgeneral = st.button("Ver lista completa de animales", 6)
+            if botonListaAnimalesgeneral:
+                st.session_state["opcion"] = 6
+
+        elif selection == "Ver dieta de los animales":
+            st.title("Dieta de los animales")
+            botonDieta = st.button("Ingresar el animal", 7)
+            if botonDieta:
+                st.session_state["opcion"] = 7
 
         if "opcion" in st.session_state:
             self.controlador.ejecutarOpcion(st.session_state["opcion"])
@@ -68,8 +83,8 @@ class zoologicoView:
             st.write("-> acuatico")
             habitat = st.selectbox(
                 "Escoge el habitat que desea agregar:",
-                ("desertico", "selvatico", "polar", "acuatico"))
-            numAnimales = st.number_input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat):", min_value=1, max_value=4,key=6)
+                ("","desertico", "selvatico", "polar", "acuatico"))
+            numAnimales = st.number_input("Escriba la cantidad de animales que pueda tener el habitat (Max 4 animales por habitat):", min_value=1, max_value=4)
             st.subheader("\t->Rangos de temperatura<-")
             st.write("-> desertico: 30° -> 40°")
             st.write("-> selvatico: 10° -> 20°")
@@ -89,7 +104,7 @@ class zoologicoView:
             st.write("-> omnivoro")
             dietaAnimal = st.selectbox(
                 "Escoge la dieta del hábitat:",
-                ("carnivoro", "herbivoro", "omnivoro"))
+                ("","carnivoro", "herbivoro", "omnivoro"))
 
             botonAccionHabitat = st.button("Crear Habitat")
             if botonAccionHabitat:
@@ -115,7 +130,6 @@ class zoologicoView:
 ##en el view debido a que manejamos información para crear los animales. Al final se retorna el hábitat creado para guardar la información en una lista vacía
 
     def menuCrearAnimales(self):
-        animal = self.zoologico.animalesGuardados
         st.divider()
         st.subheader("Hola usuario, escribe las caracteristicas del animal que quieres crear\n")
         id = st.number_input("Escribe el id del animal:", min_value=1,max_value=1000000000)
@@ -127,7 +141,7 @@ class zoologicoView:
         st.write("-> acuatico")
         habitat = st.selectbox(
             "Escoge el habitat que desea agregar:",
-            ("desertico", "selvatico", "polar", "acuatico"))
+            ("","desertico", "selvatico", "polar", "acuatico"))
         edad = st.number_input("Escribe la edad del animal:", min_value=1,max_value=15)
         st.subheader("\t->Dietas disponibles<-")
         st.write("-> carnivoro")
@@ -135,19 +149,28 @@ class zoologicoView:
         st.write("-> omnivoro")
         dieta = st.selectbox(
             "Escoge la dieta del hábitat:",
-            ("carnivoro", "herbivoro", "omnivoro"))
+            ("","carnivoro", "herbivoro", "omnivoro"))
         st.subheader("\t->Rangos de temperatura<-")
         st.write("-> desertico: 30° -> 40°")
         st.write("-> selvatico: 10° -> 20°")
         st.write("-> polar: -20° -> -5")
         st.write("-> acuatico: 2° -> 8° ")
-        temperatura = st.number_input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla:",
-                                      min_value=-20, max_value=40)
+        if habitat == "desertico":
+            temperatura = st.number_input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla:",
+                                          min_value=30, max_value=40)
+        elif habitat == "selvatico":
+            temperatura = st.number_input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla:",
+                                          min_value=10, max_value=20)
+        elif habitat == "polar":
+            temperatura = st.number_input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla:",
+                                          min_value=-20, max_value=-5)
+        else:
+            temperatura = st.number_input("Escribe la temperatura del habitat de acuerdo con el rango de la pantalla:",
+                                          min_value=2, max_value=8)
         horasDormir = st.number_input("Escribe las horas de dormir del animal:", min_value=5, max_value=20)
         botonAccionAnimales = st.button("Crear Animal")
         if botonAccionAnimales:
-            nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0, None,
-                                                 None)
+            nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0, "si","si")
             return nuevoAnimal
         # st.write("\nA continuacion se realizara dos preguntas cerradas para saber si el animal "
         #       "esta en condiciones del habitat seleccionado, \nsi escribe 'si' en ambas es porque esta en condiciones, sino no lo esta.")
@@ -204,74 +227,72 @@ class zoologicoView:
         #         st.success("El animal fue creado correctamente")
         #         return nuevoAnimal
 
-    def buscarAnimal(self, id, animalesGuardados):
-        for animal in animalesGuardados:
-            if animal.id == id:
-                return animal
-
-    def agregarAnimalHabitat(self, animalesGuardados):
-        botonAgregarHabitat = st.button("Agregar a Hábitat")
-        if botonAgregarHabitat:
-            listaAnimal = st.selectbox("Escoge el animal que deseas agregar", animalesGuardados)
-
+    def agregarAnimalHabitat(self, animalesGuardados, habitats):
+        self.mostrarAnimalesZoologico(animalesGuardados)
+        st.divider()
+        self.mostrarHabitats(habitats)
+        st.divider()
+        opcionesAnimales = []
+        opcionesHabitat = []
+        for animales in animalesGuardados:
+            opcionesAnimales.append(animales.id)
+        for habitat in habitats:
+            opcionesHabitat.append(habitat.habitat)
+        id = st.selectbox("Escoge el animal que deseas agregar", opcionesAnimales)
+        habitatSeleccionado = st.selectbox("Escoge el hábitat donde quieres agregar el animal", opcionesHabitat)
+        animalEscogido = self.verificarAnimal(animalesGuardados,id)
+        habitatEscogido = self.verificarHabitat(habitats, habitatSeleccionado)
         botonAccion = st.button("Agregar")
+        if botonAccion:
+            if animalEscogido.dieta == habitatEscogido.dieta and animalEscogido.tipoHabitat == habitatEscogido.habitat:
+                self.zoologico.eliminarAnimalGuardado(id)
+                return animalEscogido
+            else:
+                st.error("La selección no concuerda o no hay disponibilidad")
 
+    def verificarAnimal(self,animalesGuardados, id):
+        for animales in animalesGuardados:
+            if id == animales.id:
+                return animales
+    def verificarHabitat(self,habitats, habitatSeleccionado):
+        for habitat in habitats:
+            if habitat.habitat == habitatSeleccionado:
+                return habitat
 
-
-## Este metodo recorre el vector de hábitat dentro de zoológico, mostrando así las hábitats existentes.
+    ## Este metodo recorre el vector de hábitat dentro de zoológico, mostrando así las hábitats existentes.
     def mostrarHabitats(self, habitats):
         st.divider()
-        with st.container():
-            st.subheader("Listado de productos disponibles")
-            if len(habitats) == 0:
-                st.error("No existe ningun hábitat")
-            else:
-                datos = pd.DataFrame(
-                    self.controlador.aplicarTabla(habitats),
-                    columns=["Tipo de Hábitat", "Capacidad Máxima", "Temperatura del hábitat", "Dieta del hábitat"]
-                )
-                st.table(datos)
+        if len(habitats) > 0:
+            with st.container():
+                st.subheader("Listado de hábitats disponibles")
+                if len(habitats) == 0:
+                    st.error("No existe ningun hábitat")
+                else:
+                    datos = pd.DataFrame(
+                        self.controlador.aplicarTabla(habitats),
+                        columns=["Tipo de Hábitat", "Capacidad Máxima", "Temperatura del hábitat", "Dieta del hábitat"]
+                    )
+                    st.table(datos)
+        else:
+            st.error("No hay hábitats en el zoológico")
 
     def mostrarAnimalesZoologico(self,animalesGuardados):
         st.divider()
-        with st.container():
-            st.subheader("Listado de Animales en el Zoológico")
-            for animales in animalesGuardados:
+        if len(animalesGuardados) > 0:
+            with st.container():
+                st.subheader("Listado de Animales en el Zoológico")
                 if len(animalesGuardados) == 0:
                     st.error("No existe ningun Animal")
                 else:
-                    if animales.tipoHabitat == "desertico":
-                        datos = pd.DataFrame(
-                            self.controlador.aplicarTablaAnimales(animalesGuardados),
-                            columns=["Id del animal", "Nombre", "Tipo de hábitat", "Edad", "Dieta",
-                                     "Horas de sueño", "Temperatura", "Clima Arido", "Soporta tormentas de arena"]
-                        )
-                        st.table(datos)
+                    datos = pd.DataFrame(
+                        self.controlador.aplicarTablaAnimales(animalesGuardados),
+                        columns=["Id del animal", "Nombre", "Tipo de hábitat", "Edad", "Dieta",
+                                 "Horas de sueño", "Temperatura"]
+                    )
+                    st.table(datos)
+        else:
+            st.error("No hay animales en el zoológico")
 
-    # def agregarAnimalesHabitat(self, animalesGuardados, habitats, nuevoAnimal):
-    #     botonAgregarAnimalesHabitat = st.button("Agregar animal a Hábitat")
-    #     if botonAgregarAnimalesHabitat:
-    #         for habitat in habitats:
-    #             seleccionHabitat = st.selectbox("Escoge el hábitat al que deseas agregar el animal:", habitat.habitat)
-    #             for animales in animalesGuardados:
-    #                 seleccionAnimal = st.selectbox("Escoge el animal:", animales.nombre)
-    #                 botonAgregar = st.button("Agregar Animal")
-    #                 if botonAgregar:
-    #                     if seleccionHabitat == nuevoAnimal.habitat and seleccionAnimal == nuevoAnimal.nombre:
-    #                         habitat.agregarAnimales(nuevoAnimal)
-    #                     else:
-    #                         st.error("No se puede agregar")
-    #
-    #
-
-
-## Estos dos métodos son auxiliares para poder verificar si realmente el animal exite pidiendo el id y el hábitat.
-    def opcionAuxiliar1(self):
-        id = int(input("Indique el id del animal: "))
-        return id
-    def opcionAuxiliar2(self):
-        tipoHabitat = input("Indique el habitat del animal: ")
-        return tipoHabitat
 
     def mostraMensajeError(self, mensaje):
         st.error(mensaje)

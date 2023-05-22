@@ -1,4 +1,5 @@
 from random import randint
+import streamlit as st
 class Animales:
     def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar, atributoHabitat1, atributoHabitat2):
         self.id = id
@@ -12,39 +13,44 @@ class Animales:
         self.estadoJugar = estadoJugar
         self.atributoHabitat1 = atributoHabitat1
         self.atributoHabitat2 = atributoHabitat2
-        self.arregloCarnivoro = ["carne", "pescado", "pechuga", "gusanos", "ave", "huevos"]
+        self.arregloCarnivoro = ["leche", "pescado", "pechuga", "gusanos", "ave", "huevos"]
         self.arregloHerbivoro = ["hierbas", "hojas", "savia", "raices", "semillas", "flores"]
-        self.arregloOmnivoro = ["frutas", "carne", "vegetales", "plantas", "pescado", "verduras"]
-        self.vectorDieta = []
+        self.arregloOmnivoro = ["frutas", "carne", "vegetales", "plantas", "higado", "verduras"]
+        if "vectorDieta" in st.session_state:
+            self.vectorDieta = st.session_state["vectorDieta"]
+        else:
+            self.vectorDieta = []
+            st.session_state["vectorDieta"] = []
 
 ## Aquí muestra las comidas dentro de la lista dieta del animal.
     def mostrarDietaAnimal(self):
         i = 0
         if self.vectorDieta:
-            print("La dieta del animal ", self.nombre, " es: ")
+            st.subheader("La dieta del animal es:")
             while i < len(self.vectorDieta):
-                print("Comida: ", self.vectorDieta[i])
+                st.write("Comida: ", self.vectorDieta[i])
                 i += 1
         else:
-            print("Por el momento no tiene dieta :(")
+            st.warning("Por el momento no tiene dieta :(")
 
 
 ## Este metodo se encarga de mostrar las posible comidas para el animal de acuerdo a su dieta, las cuales
 ## están dentro determinadas dentro de arreglos.
     def mostrarDietasDisponibles(self, dieta):
-        print("\t->Para el animal esta disponible la siguiente dieta<-")
+        st.divider()
+        st.subheader("\t->Para el animal esta disponible la siguiente dieta<-")
         i = 0
-        if (dieta == "carnivoro" or dieta == "Carnivoro"):
+        if dieta == "carnivoro" or dieta == "Carnivoro":
             while i < len(self.arregloCarnivoro):
-                print("- ", self.arregloCarnivoro[i])
+                st.write("- ", self.arregloCarnivoro[i])
                 i += 1
-        elif (dieta == "Herbivoro" or dieta == "herbivoro"):
+        elif dieta == "Herbivoro" or dieta == "herbivoro":
             while i < len(self.arregloHerbivoro):
-                print("- ", self.arregloHerbivoro[i])
+                st.write("- ", self.arregloHerbivoro[i])
                 i += 1
         else:
             while i < len(self.arregloOmnivoro):
-                print("- ", self.arregloOmnivoro[i])
+                st.write("- ", self.arregloOmnivoro[i])
                 i += 1
 
 ## Este metodo verificar que la comida que se pase como parametro este dentro de la opciones de dieta, y que esté
@@ -57,14 +63,16 @@ class Animales:
                 bandera = 1
                 return bandera
         else:
-            print("La comida que quieres agregar ya esta en la dieta del animal")
+            st.warning("La comida que quieres agregar ya esta en la dieta del animal")
 
         return bandera
 
 ## Este método se encarga solo de meter la comida dentro de la lista dieta del animal.
     def agregarComida(self, comida):
+        st.success("Se agrego la comida!")
         self.vectorDieta.append(comida)
-        print("Se agrego la comida!\n")
+        st.session_state["vectorDieta"] = self.vectorDieta
+
 
 ## Este método se encarga de lo relacionado a cambiar la dieta del animal, por eso se recibe como parametro
 ## una comida y una acción que significa si se quiere cambiar o eliminar de la dieta.

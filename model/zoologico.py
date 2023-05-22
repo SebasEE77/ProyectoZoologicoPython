@@ -29,14 +29,9 @@ class Zoologico:
             self.habitats.append(nuevHabitat)
             st.session_state["habitats"] = self.habitats
 
-    def agregarAnimal_Habitat(self, nuevoAnimal, tipoHabitat):
+    def agregarAnimal_Habitat(self, nuevoAnimal):
         for habitat in self.habitats:
-            if nuevoAnimal.habitat != habitat.habitat:
-                print("El animal que desea agregar no coincide con el habitat de registro")
-            elif nuevoAnimal.dieta != habitat.dieta:
-                print("El animal no coincide con la dieta del habitat")
-            else:
-                habitat.agregarAnimales(nuevoAnimal)
+            habitat.agregarAnimales(nuevoAnimal)
 
     def ingresarAnimalZoologico(self, nuevoAnimal):
         bandera = 0
@@ -48,6 +43,11 @@ class Zoologico:
             st.success("El animal fue creado correctamente")
             self.animalesGuardados.append(nuevoAnimal)
             st.session_state["animalesGuardados"] = self.animalesGuardados
+    def eliminarAnimalGuardado(self,id):
+        for i, animales in enumerate(self.animalesGuardados):
+            if animales.id == id:
+                self.animalesGuardados.pop(i)
+                st.session_state["animalesGuardados"] = self.animalesGuardados
 
 
 
@@ -97,29 +97,36 @@ class Zoologico:
 #
 # ##  Este método verifica si hay algo en la lista de hábitats y luego la recorre para así en cada una llamar al metodo de mostrarAnimales,
 # ## mostrando de tal modo los animales dentro de cada habitat existente
-#     def mostrarAnimalesGeneral(self):
-#         if self.habitats:
-#             print("\tListado de animales Zoo de Cali")
-#             for habitat in self.habitats:
-#                 habitat.mostrarAnimales()
-#         else:
-#             print("No hay habitats disponibles en el zoologico, entonces, no existe ningun animal")
-#
+    def mostrarAnimalesGeneral(self):
+        st.divider()
+        if self.habitats:
+            for habitat in self.habitats:
+                habitat.mostrarAnimales()
+        else:
+            st.error("No hay habitats disponibles en el zoologico, entonces, no existe ningun animal")
+
+
+
 # ## Este metodo recibe el id del animal, el hábitat y la opción a realizar con el animal. Dentro de esta se recorre
 # ## la lista de habitat buscando el hábitat específico del animal, luego de acuerdo a la opción escogida se llama el método correspondiente del
 # ## hábitat, ya sea mostrarAnimalInfo, dietaVectoresAnimales o interactuarAnimal.
-#     def buscarAnimal(self, id, tipoHabitat, opcion):
-#         bandera = 0
-#         for habitat in self.habitats:
-#             if(habitat.habitat == tipoHabitat):
-#                 if(opcion == 5):
-#                     habitat.mostrarAnimalInfo(id)
-#                 elif (opcion == 6):
-#                     habitat.dietaVectoresAnimales(id)
-#                 else:
-#                     habitat.interactuarAnimal(id)
-#                 bandera = 1
-#
-#         if(bandera == 0):
-#             print("No existe tal habitat, por lo tanto tampoco el animal")
+    def buscarAnimal(self,opcion):
+        opcionesHabitat = []
+        for habitat in self.habitats:
+            opcionesHabitat.append(habitat.habitat)
+            animalEscogido = habitat.buscarAnimalAnimales()
+            habitatSeleccionado = st.selectbox("Escoge el hábitat del animal", opcionesHabitat)
+            habitatEscogido = self.verificarHabitat2(self.habitats, habitatSeleccionado)
+            botonAccion = st.button("Ver dieta")
+            if botonAccion:
+                if animalEscogido.tipoHabitat == habitatEscogido.habitat:
+                    if opcion == 5:
+                        habitat.dietaVectoresAnimales(animalEscogido)
+                else:
+                    st.error("El hábitat no concuerda con el animal")
+
+    def verificarHabitat2(self,habitats, habitatSeleccionado):
+        for habitat in habitats:
+            if habitat.habitat == habitatSeleccionado:
+                return habitat
 

@@ -13,19 +13,30 @@ class zoologicoController:
                     self.modelo.agregarHabitat(habitat)
             except ValueError:
                 self.vista.mostraMensajeError("Se presentó un error creando el hábitat")
-        elif opcion == 2:
+        if opcion == 2:
             try:
                 animales = self.vista.menuCrearAnimales()
                 if animales:
                     self.modelo.ingresarAnimalZoologico(animales)
             except ValueError:
                 self.vista.mostraMensajeError("Se presentó un error creando el animal")
-        elif opcion == 3:
-            self.vista.agregarAnimalHabitat(self.modelo.animalesGuardados)
+        if opcion == 3:
+            try:
+                animal = self.vista.agregarAnimalHabitat(self.modelo.animalesGuardados,self.modelo.habitats)
+                if animal:
+                    self.modelo.agregarAnimal_Habitat(animal)
+            except ValueError:
+                self.vista.mostraMensajeError("Se presentó un error creando el animal")
         if opcion == 4:
             self.vista.mostrarHabitats(self.modelo.habitats)
         if opcion == 5:
             self.vista.mostrarAnimalesZoologico(self.modelo.animalesGuardados)
+        if opcion == 6:
+            self.modelo.mostrarAnimalesGeneral()
+        if opcion == 7:
+            self.modelo.mostrarAnimalesGeneral()
+            self.modelo.buscarAnimal(5)
+
         # elif opcion == 6:
         #     self.modelo.mostrarAnimalesGeneral()
         #     aux2 = self.vista.opcionAuxiliar2()
@@ -33,8 +44,7 @@ class zoologicoController:
         #     self.modelo.buscarAnimal(aux1, aux2, 5)
         # elif opcion == 7:
         #     self.modelo.mostrarAnimalesGeneral()
-        #     aux2 = self.vista.opcionAuxiliar2()
-        #     aux1 = self.vista.opcionAuxiliar1()
+
         #     self.modelo.buscarAnimal(aux1, aux2, 6)
         # elif opcion == 8:
         #     self.modelo.mostrarAnimalesGeneral()

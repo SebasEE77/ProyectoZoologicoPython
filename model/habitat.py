@@ -1,3 +1,5 @@
+import streamlit as st
+import pandas as pd
 class Habitat:
     def __init__(self, habitat, numAnimales, temperatura,dieta,contadorAnimales):
         self.habitat = habitat
@@ -5,7 +7,11 @@ class Habitat:
         self.temperatura = temperatura
         self.dieta = dieta
         self.contadorAnimales = contadorAnimales
-        self.animales = []
+        if "animales" in st.session_state:
+            self.animales = st.session_state["animales"]
+        else:
+            self.animales = []
+            st.session_state["animales"] = []
 
 ## Este metodo solamente muestra la información de los hábitats que existen en el zoológico
     def imprimirHabitat(self):
@@ -17,106 +23,116 @@ class Habitat:
 ## Este metodo agrega los animales a la lista animales teniendo en cuenta las características recibidas
 ## en el método de ingresarAnimal de zoologico.
     def agregarAnimales(self, nuevoAnimal):
-        bandera = 0
-        self.contadorAnimales += 1
-        for animales in self.animales:
-            if animales.id == nuevoAnimal.id:
-                bandera = 1
-                print("No es posible agregar el animal por el id escrito")
-
-        if self.contadorAnimales > self.numAnimales:
-            bandera = 1
-            print("No es posible agregar ya que no hay disponiblidad")
-
-        if (bandera == 0):
-            self.animales.append(nuevoAnimal)
-            print("Se agrego el animal correctamente")
+        # if self.animales:
+        #     self.contadorAnimales += 1
+        # if len(self.animales) < self.numAnimales:
+        #     st.success("El animal fue agregado")
+        st.success("Se agrego el animal")
+        self.animales.append(nuevoAnimal)
+        st.session_state["animales"] = self.animales
+        # else:
+        #     st.error("No hay disponibilidad en el hábitat")
 
 ## Este método lo que hace es listar los animales dentro de la lista animales mostrando su id, nombre y tipo de hábitat,
 ## además, si no existe ningun animal se muestra el mensaje indicando que no existen.
     def mostrarAnimales(self):
+        if len(self.animales) > 0:
+            with st.container():
+                st.subheader("Listado de Animales en los hábitats")
+                if len(self.animales) == 0:
+                    st.error("No existe ningun hábitat")
+                else:
+                    datos = pd.DataFrame(
+                        self.aplicarTablaAnimalesGeneral(),
+                        columns=["Id del animal", "Nombre", "Tipo de hábitat", "Edad", "Dieta",
+                                 "Horas de sueño", "Temperatura"]
+                    )
+                    st.table(datos)
+        else:
+            st.error("No hay animales en los hábitats")
+
+    def aplicarTablaAnimalesGeneral(self):
+        datos = []
         for animales in self.animales:
-            if self.animales:
-                print("-------------------------")
-                print("id: ", animales.id)
-                print("Nombre: ", animales.nombre)
-                print("Habitat: ", animales.habitat)
-                print("-------------------------")
+            datos.append([animales.id, animales.nombre, animales.tipoHabitat, animales.edad, animales.dieta,
+                          animales.horasDormir,animales.temperatura])
+        return datos
 
-            else:
-                print("No hay animales por el momento")
-
-
-## Este método se encarga de mostrar la información completa del animal de acuerdo al id pasado como parametro de la función. Aquí se busca
-## dentro de la lista animales del habitat que encuentra buscarAnimal de la clase zoologico.
-    def mostrarAnimalInfo(self,id):
-        bandera = 0
+    def buscarAnimalAnimales(self):
+        st.divider()
+        opcionesAnimales = []
         for animales in self.animales:
-            if animales.id == id:
-                print("\t ->Esta es la  ficha de informacion del animal<-")
-                print("Id: ", animales.id)
-                print("Nombre: ", animales.nombre)
-                print("Habitat: ", animales.habitat)
-                print("Edad: ", animales.edad)
-                print("Alimentacion: ", animales.dieta)
-                print("Horas de dormir: ", animales.horasDormir)
-                print("Temperatura del animal: ", animales.temperatura)
-                bandera = 1
+            opcionesAnimales.append(animales.id)
+        id = st.selectbox("Escoge el id del animal", opcionesAnimales)
+        animalEscogido = self.verificarAnimal2(self.animales, id)
+        return animalEscogido
 
-        if bandera == 0:
-            print("El animal no pertenece al zoologico")
+    def verificarAnimal2(self,animalesGuardados, id):
+        for animales in animalesGuardados:
+            if id == animales.id:
+                return animales
+
+
 
 ## Este metodo lo que se encarga es de buscar al animal dentro de la lista animales de acuerdo a su id para de tal modo gestionar la dieta del animal,
 ## ya sea agregar una comida, cambiarla por otra o eliminarla de su dieta.
-    def dietaVectoresAnimales(self,id):
-        bandera = 0
-        banderaVerificacion = 0
+    def dietaVectoresAnimales(self,animalEscogido):
         for animales in self.animales:
-            if animales.id == id:
-                print("Bienvenido al menu de dieta para los animales del Zoo\n")
-                print("->[1]. Ver la dieta del animal\n")
-                print("->[2]. Agregar comida a la dieta del animal\n")
-                print("->[3]. Modificar/Eliminar comida de la dieta del animal\n")
-                opcion = int(input("Elige una opcion: "))
-                while(banderaVerificacion == 0):
-                    if(opcion < 1 or opcion > 3):
-                        opcion = int(input("Elige una opcion: "))
-                    else:
-                        banderaVerificacion = 1
-                if opcion == 1:
-                    animales.mostrarDietaAnimal()
-                    bandera = 1
-                elif opcion == 2:
-                    bandera = 1
-                    dieta = animales.dieta
-                    animales.mostrarDietasDisponibles(dieta)
-                    print("-----------------------------------------")
-                    comida = input("Elige una comida de la lista para el animal: ")
-                    while animales.verificarComida(comida) == 0:
-                        comida = input("Elige otra comida de la lista para el animal: ")
-                    animales.agregarComida(comida)
+            if animales.id == animalEscogido.id:
+                st.divider()
+                dieta = animales.dieta
+                animales.mostrarDietasDisponibles(dieta)
+                if dieta == "carnivoro":
+                    comida = st.selectbox("Elige una comida de la lista para el animal: ",
+                                          animales.arregloCarnivoro, key=10)
+                elif dieta == "herbivoro":
+                    comida = st.selectbox("Elige una comida de la lista para el animal: ",
+                                          animales.arregloHerbivoro, key=11)
                 else:
-                    bandera = 1
-                    print("->[1]. Modificar\n")
-                    print("->[2]. Eliminar\n")
-                    accion = int(input("->Escoge una opcion<-\n"))
-                    while banderaVerificacion == 1:
-                        if accion < 1 or accion > 2:
-                            accion = int(input("->Escoge una opcion<-\n"))
-                        else:
-                            banderaVerificacion = 0
+                    comida = st.selectbox("Elige una comida de la lista para el animal: ", animales.arregloOmnivoro,
+                                          key=12)
+                animales.agregarComida(comida)
 
-                    if accion == 1:
-                        animales.mostrarDietaAnimal()
-                        comida = input("Ingrese la comida que quisiera modificar: ")
-                        animales.modificarDieta("modificar", comida)
-                    else:
-                        animales.mostrarDietaAnimal()
-                        comida = input("Ingrese la comida que quisieras eliminar: ")
-                        animales.modificarDieta("eliminar", comida)
+            else:
+                st.error("El animal indicado no existe")
+                # st.subheader("Bienvenido al menu de dieta para los animales del Zoo\n")
+                # tab1, tab2, tab3 = st.tabs(["Ver la dieta del animal", "Agregar comida a la dieta del animal",
+                #                             "Modificar/Eliminar comida de la dieta del animal"])
+                # with tab1:
+                #     st.header("Dieta del animal")
+                #     animales.mostrarDietaAnimal()
+                # with tab2:
+                #     dieta = animales.dieta
+                #     animales.mostrarDietasDisponibles(dieta)
+                #     if dieta == "carnivoro":
+                #         comida = st.selectbox("Elige una comida de la lista para el animal: ",
+                #                               animales.arregloCarnivoro, key=10)
+                #     elif dieta == "herbivoro":
+                #         comida = st.selectbox("Elige una comida de la lista para el animal: ",
+                #                               animales.arregloHerbivoro, key=11)
+                #     else:
+                #         comida = st.selectbox("Elige una comida de la lista para el animal: ", animales.arregloOmnivoro,
+                #                               key=12)
+                #     botonAccion = st.button("Agregar Comida", key=13)
+                #     if botonAccion:
+                #         animales.agregarComida(comida)
+                # with tab3:
+                #     with st.container():
+                #         colModificar,colEliminar = st.columns(2)
+                #         colModificar.subheader("Modificar dieta")
+                #         modificar = st.button("Modificar")
+                #         if modificar:
+                #             comidaModificar = animales.mostrarDietaAnimal()
+                #             comida2 = st.selectbox("Ingrese la comida que quisiera modificar: ",comidaModificar)
+                #             animales.modificarDieta("modificar", comida2)
+                #         colEliminar.subheader("Eliminar Dieta")
+                #         eliminar = st.button("Eliminar")
+                #         if eliminar:
+                #             comidaEliminar = animales.mostrarDietaAnimal()
+                #             comida2 = st.selectbox("Ingrese la comida que quisiera modificar: ", comidaEliminar)
+                #             animales.modificarDieta("eliminar", comida2)
 
-        if(bandera == 0):
-            print("El animal indicado no existe\n")
+
 
 ## Este metodo se encargara de buscar al animal dentro del hábitat de acuerdo al id mandado como parametro. Luego pedira al usuario que escoga
 ## una opción para interactuar con el animal, ya sea jugar, dormir o comer.
@@ -187,12 +203,6 @@ class desertico(Habitat):
         print("Hay tormentas de arena: ", self.tormentaArena)
         print("-------------------------")
 
-    def mostrarAnimalInfo(self,id):
-        super().mostrarAnimalInfo(id)
-        for animales in self.animales:
-            print("Clima Arido: ", animales.atributoHabitat1)
-            print("Hay tormentas de arena: ", animales.atributoHabitat2)
-
 class acuatico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, respiraAgua, nadar):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
@@ -205,12 +215,6 @@ class acuatico(Habitat):
         print("Se puede respirar bajo el agua: ", self.respiraAgua)
         print("Se puede nadar: ", self.nadar)
         print("-------------------------")
-
-    def mostrarAnimalInfo(self,id):
-        super().mostrarAnimalInfo(id)
-        for animales in self.animales:
-            print("Puede respirar bajo el agua: ", animales.atributoHabitat1)
-            print("Puede nadar: ", animales.atributoHabitat2)
 
 class polar(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, clima, escasaVegetacion):
@@ -225,12 +229,6 @@ class polar(Habitat):
         print("Tiene escasa vegetacion: ", self.escasaVegetacion)
         print("-------------------------")
 
-    def mostrarAnimalInfo(self,id):
-        super().mostrarAnimalInfo(id)
-        for animales in self.animales:
-            print("Soporta extremas temperaturas: ", animales.atributoHabitat1)
-            print("Soporta un ecosistema con escasa vegetacion: ", animales.atributoHabitat2)
-
 class selvatico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, climaSelvatico, diversidad):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
@@ -244,8 +242,3 @@ class selvatico(Habitat):
         print("Tiene mucha diversidad biologica: ", self.diversidad)
         print("-------------------------")
 
-    def mostrarAnimalInfo(self,id):
-        super().mostrarAnimalInfo(id)
-        for animales in self.animales:
-            print("Soporta el clima calido y humedo: ", animales.atributoHabitat1)
-            print("Soporta la densa vegetacion y la diversidad biologica: ", animales.atributoHabitat2)
