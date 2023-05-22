@@ -14,7 +14,7 @@ class zoologicoView:
 
     def mostrarMenu(self):
         pages = ["Inicio" ,"Agregar Habitat", "Agregar Animal a un Zoológico", "Agregar animal a un Hábitat", "Ver lista de Hábitats",
-                 "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales"]
+                 "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales","Interactuar con los animales"]
         selection = st.sidebar.radio("Selecciona una opción del menú", pages)
 
         if selection == "Inicio":
@@ -66,6 +66,12 @@ class zoologicoView:
             botonDieta = st.button("Ingresar el animal", 7)
             if botonDieta:
                 st.session_state["opcion"] = 7
+
+        elif selection == "Interactuar con los animales":
+            st.title("Interacción con los animales de las hábitats")
+            botonAccionAnimal = st.button("Interactuar", 8)
+            if botonAccionAnimal:
+                st.session_state["opcion"] = 8
 
         if "opcion" in st.session_state:
             self.controlador.ejecutarOpcion(st.session_state["opcion"])
@@ -170,7 +176,7 @@ class zoologicoView:
         horasDormir = st.number_input("Escribe las horas de dormir del animal:", min_value=5, max_value=20)
         botonAccionAnimales = st.button("Crear Animal")
         if botonAccionAnimales:
-            nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0, "si","si")
+            nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0, "si","si",3)
             return nuevoAnimal
         # st.write("\nA continuacion se realizara dos preguntas cerradas para saber si el animal "
         #       "esta en condiciones del habitat seleccionado, \nsi escribe 'si' en ambas es porque esta en condiciones, sino no lo esta.")

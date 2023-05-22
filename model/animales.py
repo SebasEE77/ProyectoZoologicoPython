@@ -1,7 +1,7 @@
 from random import randint
 import streamlit as st
 class Animales:
-    def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar, atributoHabitat1, atributoHabitat2):
+    def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar, atributoHabitat1, atributoHabitat2,intentosJugar):
         self.id = id
         self.nombre = nombre
         self.tipoHabitat = habitat
@@ -11,6 +11,7 @@ class Animales:
         self.temperatura = temperatura
         self.estadoActivo = estadoActivo
         self.estadoJugar = estadoJugar
+        self.intentosJugar = intentosJugar
         self.atributoHabitat1 = atributoHabitat1
         self.atributoHabitat2 = atributoHabitat2
         self.arregloCarnivoro = ["leche", "pescado", "pechuga", "gusanos", "ave", "huevos"]
@@ -32,6 +33,9 @@ class Animales:
                 i += 1
         else:
             st.warning("Por el momento no tiene dieta :(")
+
+    def modificarDietaInfo(self):
+        return self.vectorDieta
 
 
 ## Este metodo se encarga de mostrar las posible comidas para el animal de acuerdo a su dieta, las cuales
@@ -69,85 +73,78 @@ class Animales:
 
 ## Este método se encarga solo de meter la comida dentro de la lista dieta del animal.
     def agregarComida(self, comida):
-        st.success("Se agrego la comida!")
-        self.vectorDieta.append(comida)
-        st.session_state["vectorDieta"] = self.vectorDieta
+        if comida not in self.vectorDieta:
+            st.success("Se agrego la comida!")
+            self.vectorDieta.append(comida)
+            st.session_state["vectorDieta"] = self.vectorDieta
+        else:
+            st.error("La comida que quieres agregar ya esta en la dieta del animal")
 
 
 ## Este método se encarga de lo relacionado a cambiar la dieta del animal, por eso se recibe como parametro
 ## una comida y una acción que significa si se quiere cambiar o eliminar de la dieta.
-    def modificarDieta(self, accion, comida):
-        bandera = 0
+    def modificarDieta(self, accion,comida):
         i = 0
-        if(accion == "modificar" or accion == "Modificar"):
-            self.mostrarDietasDisponibles(self.dieta)
-            nuevaComida = input("Ingrese la comida a cambiar por: " )
-            while i < len(self.vectorDieta):
-                if(self.vectorDieta[i] == comida and self.verificarComida(nuevaComida) == 1):
-                    self.vectorDieta[i] = nuevaComida
-                    bandera = 1
-                i += 1
-
-        elif (accion == "eliminar" or accion == "Eliminar"):
-            while i < len(self.vectorDieta):
-                if self.vectorDieta[i] == comida:
-                    self.vectorDieta.pop(i)
-                    bandera = 1
-                i += 1
-
-        if bandera == 0:
-            print("La comida ", comida, " no se encontraba en la dieta")
+        if self.vectorDieta:
+            if accion == "modificar":
+                self.mostrarDietasDisponibles(self.dieta)
+                nuevaComida = st.text_input("Ingrese la comida a cambiar por:")
+                accion = st.button("Modificar")
+                if accion:
+                    while i < len(self.vectorDieta):
+                        if(self.vectorDieta[i] == comida and self.verificarComida(nuevaComida) == 1):
+                            self.vectorDieta[i] = nuevaComida
+                            st.success("La modificación fue exitosa")
+                        i += 1
         else:
-            print("Accion valida!")
+            st.error("No hay dieta")
 
 
 ## Este método es el que se encarga de que el usuario interactué con un animal en
 ## específico jugando a adivinar un número aleatorio.
     def jugar(self):
-        intentos = 3
-        num = -1
         aleatorio = randint(1,10)
-        print("Hola! Ahora vas a jugar con ", self.nombre)
-        print("El juego consiste en que adivines un numero entre el 1 y el 10\n")
-        print("Listo?")
-        while num != aleatorio and intentos > 0:
-            num = int(input("Escribe tu respuesta: "))
+        st.subheader("Hola! Ahora vas a jugar con el animal que seleccionaste")
+        st.write("El juego consiste en que adivines un numero entre el 1 y el 10\n")
+        st.write("Listo?")
+        num = st.selectbox("Escoge tu respuesta:", ("", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), key=20)
+        intento = st.button("Intentar")
+        if intento:
+            self.intentosJugar -= 1
             if num == aleatorio:
-                print("Has ganado!!, ", self.nombre, " esta feliz")
-            else:
-                print("Te has equivocado!")
-                intentos -= 1
-        if intentos == 0:
-            print("El animal esta triste, no ganaste")
+                st.success("Has ganado!!, ahora el animal esta feliz")
+                self.estadoJugar = 1
+            elif num != aleatorio and self.intentosJugar > 0:
+                st.warning("Te has equivocado!")
+        if self.intentosJugar == 0 and num != aleatorio:
+            st.error("Has perdido!, el animal esta triste :(")
+            self.estadoJugar = 1
 
-## Este metodo se encarga de darle de comer al animal de acuerdo a la acción escogida por el usuario. Se muestra la dieta del animal
+    ## Este metodo se encarga de darle de comer al animal de acuerdo a la acción escogida por el usuario. Se muestra la dieta del animal
 ## y se escoge la que haya disponible.
     def comer(self):
-        bandera = 0
         if self.vectorDieta:
             self.mostrarDietaAnimal()
-            comida = input("Ahora elige una comida para el animal de acuerdo a la dieta: ")
-            while bandera == 0:
-                if comida not in self.vectorDieta:
-                    print("La comida que quieres agregar no hace parte de la dieta ")
-                    comida = input("Ahora elige una comida para el animal de acuerdo a la dieta: ")
+            comida = st.text_input("Ahora elige una comida para el animal de acuerdo a la dieta:")
+            comer = st.button("Darle de comer")
+            if comer:
+                if comida in self.vectorDieta:
+                    st.success("yummmmm, el animal ha comido y te lo agradece mucho")
                 else:
-                    bandera = 1
-            print("------------------")
-            print("yummmmm ", self.nombre, " ha comido ", comida, " ,te lo agradece mucho")
+                    st.warning("La comida que quieres agregar no hace parte de la dieta")
         else:
-            print("Lo sentimos pero no tienes nada agregado en la dieta del animal")
+            st.error("Lo sentimos pero no tienes nada agregado en la dieta del animal")
 
 ## Este metodo se encarga de mandar al animal a dormir si se especifica el número de horas exacta escritas
 ## a la hora de crear el animal.
     def dormir(self):
-        horas = -1
-        while horas != self.horasDormir:
-            horas = int(input("Indica las horas para que el animal duerma: "))
+        horas = st.number_input("Indica las horas para que el animal duerma:", min_value=1,max_value=20)
+        dormir = st.button("Poner a dormir al animal")
+        if dormir:
             if horas > self.horasDormir:
-                print("Son muchas horas para dormir!\n")
+                st.warning("Son muchas horas para dormir!")
             elif horas < self.horasDormir:
-                print("Son pocas horas para dormir!\n")
+                st.warning("Son pocas horas para dormir!")
             else:
-                print("El animal ya duerme tranquilo\n")
+                st.success("El animal ya duerme tranquilo")
                 self.estadoActivo = 0

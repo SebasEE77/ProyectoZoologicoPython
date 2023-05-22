@@ -23,13 +23,20 @@ class Habitat:
 ## Este metodo agrega los animales a la lista animales teniendo en cuenta las características recibidas
 ## en el método de ingresarAnimal de zoologico.
     def agregarAnimales(self, nuevoAnimal):
+        bandera = 0
+        for animales in self.animales:
+            if animales.id == nuevoAnimal.id:
+                st.error("No se puede agregar ya que el id es el mismo al de otro animal")
+                bandera = 1
+        if bandera == 0:
+            st.success("El animal fue creado correctamente")
+            self.animales.append(nuevoAnimal)
+            st.session_state["animales"] = self.animales
+
         # if self.animales:
         #     self.contadorAnimales += 1
         # if len(self.animales) < self.numAnimales:
         #     st.success("El animal fue agregado")
-        st.success("Se agrego el animal")
-        self.animales.append(nuevoAnimal)
-        st.session_state["animales"] = self.animales
         # else:
         #     st.error("No hay disponibilidad en el hábitat")
 
@@ -80,111 +87,67 @@ class Habitat:
         for animales in self.animales:
             if animales.id == animalEscogido.id:
                 st.divider()
-                dieta = animales.dieta
-                animales.mostrarDietasDisponibles(dieta)
-                if dieta == "carnivoro":
-                    comida = st.selectbox("Elige una comida de la lista para el animal: ",
-                                          animales.arregloCarnivoro, key=10)
-                elif dieta == "herbivoro":
-                    comida = st.selectbox("Elige una comida de la lista para el animal: ",
-                                          animales.arregloHerbivoro, key=11)
-                else:
-                    comida = st.selectbox("Elige una comida de la lista para el animal: ", animales.arregloOmnivoro,
-                                          key=12)
-                animales.agregarComida(comida)
+                st.subheader("Bienvenido al menu de dieta para los animales del Zoo\n")
+                tab1, tab2, tab3 = st.tabs(["Ver la dieta del animal", "Agregar comida a la dieta del animal",
+                                            "Modificar comida de la dieta",])
+                with tab1:
+                    st.header("Dieta del animal")
+                    animales.mostrarDietaAnimal()
+                with tab2:
+                    dieta = animales.dieta
+                    animales.mostrarDietasDisponibles(dieta)
+                    if dieta == "carnivoro":
+                        comida = st.selectbox("Elige una comida de la lista para el animal: ",animales.arregloCarnivoro)
+                    elif dieta == "herbivoro":
+                        comida = st.selectbox("Elige una comida de la lista para el animal: ",
+                                              animales.arregloHerbivoro, key=11)
+                    else:
+                        comida = st.selectbox("Elige una comida de la lista para el animal: ", animales.arregloOmnivoro,
+                                              key=12)
+                    botonAccion = st.button("Agregar Comida", key=13)
+                    if botonAccion:
+                        animales.agregarComida(comida)
 
-            else:
-                st.error("El animal indicado no existe")
-                # st.subheader("Bienvenido al menu de dieta para los animales del Zoo\n")
-                # tab1, tab2, tab3 = st.tabs(["Ver la dieta del animal", "Agregar comida a la dieta del animal",
-                #                             "Modificar/Eliminar comida de la dieta del animal"])
-                # with tab1:
-                #     st.header("Dieta del animal")
-                #     animales.mostrarDietaAnimal()
-                # with tab2:
-                #     dieta = animales.dieta
-                #     animales.mostrarDietasDisponibles(dieta)
-                #     if dieta == "carnivoro":
-                #         comida = st.selectbox("Elige una comida de la lista para el animal: ",
-                #                               animales.arregloCarnivoro, key=10)
-                #     elif dieta == "herbivoro":
-                #         comida = st.selectbox("Elige una comida de la lista para el animal: ",
-                #                               animales.arregloHerbivoro, key=11)
-                #     else:
-                #         comida = st.selectbox("Elige una comida de la lista para el animal: ", animales.arregloOmnivoro,
-                #                               key=12)
-                #     botonAccion = st.button("Agregar Comida", key=13)
-                #     if botonAccion:
-                #         animales.agregarComida(comida)
-                # with tab3:
-                #     with st.container():
-                #         colModificar,colEliminar = st.columns(2)
-                #         colModificar.subheader("Modificar dieta")
-                #         modificar = st.button("Modificar")
-                #         if modificar:
-                #             comidaModificar = animales.mostrarDietaAnimal()
-                #             comida2 = st.selectbox("Ingrese la comida que quisiera modificar: ",comidaModificar)
-                #             animales.modificarDieta("modificar", comida2)
-                #         colEliminar.subheader("Eliminar Dieta")
-                #         eliminar = st.button("Eliminar")
-                #         if eliminar:
-                #             comidaEliminar = animales.mostrarDietaAnimal()
-                #             comida2 = st.selectbox("Ingrese la comida que quisiera modificar: ", comidaEliminar)
-                #             animales.modificarDieta("eliminar", comida2)
+                with tab3:
+                    st.subheader("Modificar dieta")
+                    verificarComida = animales.modificarDietaInfo()
+                    comida = st.selectbox("Ingrese la comida que quisiera modificar: ", verificarComida)
+                    animales.modificarDieta("modificar",comida)
 
 
 
 ## Este metodo se encargara de buscar al animal dentro del hábitat de acuerdo al id mandado como parametro. Luego pedira al usuario que escoga
 ## una opción para interactuar con el animal, ya sea jugar, dormir o comer.
-    def interactuarAnimal(self, id):
-        bandera = 0
-        banderaVerificacion = 0
+    def interactuarAnimal(self, animalEscogido):
         for animales in self.animales:
-            if animales.id == id:
-                print("Gracias por querer interactuar con nuestros animales!")
-                print("->[1]. Jugar\n" "->[2]. Comer\n" "->[3]. Dormir\n")
-                opcion = int(input("Elige la accion que quieras hacer: "))
-                while (banderaVerificacion == 0):
-                    if (opcion < 1 or opcion > 3):
-                        opcion = int(input("Elige una opcion: "))
-                    else:
-                        banderaVerificacion = 1
-                if opcion == 1:
+            if animales.id == animalEscogido.id:
+                st.divider()
+                st.subheader("Gracias por querer interactuar con nuestros animales!")
+                tab1, tab2, tab3 = st.tabs(["Jugar", "Comer","Dormir", ])
+                with tab1:
                     if animales.estadoActivo == 0:
-                        print("El animal esta dormiendo en este momento")
+                        st.warning("El animal esta dormiendo en este momento")
                     elif animales.estadoJugar == 1:
-                        print("El animal ya ha jugado. Desea jugar con él?")
-                        print("->[1]. Si\n" "->[2]. No\n")
-                        accion = int(input("Escoja su opcion: "))
-                        while banderaVerificacion == 1:
-                            if (accion < 1 or accion > 2):
-                                accion = int(input("Escoja su opcion: "))
-                            else:
-                                banderaVerificacion = 0
-                        if accion == 1:
-                            animales.jugar()
-                        else:
-                            animales.estadoJugar = 0
+                        st.warning("El animal ya ha jugado, podrá jugar otra vez cuando duerma")
                     else:
                         animales.jugar()
-                        animales.estadoJugar = 1
 
-                elif opcion == 2:
+                with tab2:
                     if animales.estadoActivo == 0:
-                        print("El animal esta dormiendo en este momento")
+                        st.warning("El animal esta dormiendo en este momento")
                     else:
                         animales.comer()
 
-                else:
+                with tab3:
                     if animales.estadoActivo == 0:
-                        print("Se desperto el animal")
                         animales.estadoActivo = 1
+                        animales.estadoJugar = 0
+                        despertar = st.button("Despertar al animal")
+                        if despertar:
+                            st.success("Se desperto el animal")
                     else:
                         animales.dormir()
-                bandera = 1
 
-        if bandera == 0:
-            print("El animal no existe")
 
 
 ## Apartir de aquí están las clases hijas de la clase hábitat las cuales tienen 2 atributos únicos que los diferencian

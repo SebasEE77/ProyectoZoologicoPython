@@ -36,21 +36,9 @@ class zoologicoController:
         if opcion == 7:
             self.modelo.mostrarAnimalesGeneral()
             self.modelo.buscarAnimal(5)
-
-        # elif opcion == 6:
-        #     self.modelo.mostrarAnimalesGeneral()
-        #     aux2 = self.vista.opcionAuxiliar2()
-        #     aux1 = self.vista.opcionAuxiliar1()
-        #     self.modelo.buscarAnimal(aux1, aux2, 5)
-        # elif opcion == 7:
-        #     self.modelo.mostrarAnimalesGeneral()
-
-        #     self.modelo.buscarAnimal(aux1, aux2, 6)
-        # elif opcion == 8:
-        #     self.modelo.mostrarAnimalesGeneral()
-        #     aux2 = self.vista.opcionAuxiliar2()
-        #     aux1 = self.vista.opcionAuxiliar1()
-        #     self.modelo.buscarAnimal(aux1, aux2, 7)
+        if opcion == 8:
+            self.modelo.mostrarAnimalesGeneral()
+            self.modelo.buscarAnimal(6)
 
     def aplicarTabla(self, habitats):
         datos = []
