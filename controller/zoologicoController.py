@@ -42,8 +42,18 @@ class zoologicoController:
 
     def aplicarTabla(self, habitats):
         datos = []
-        for habitat in habitats:
-            datos.append([habitat.habitat, habitat.numAnimales, habitat.temperatura, habitat.dieta])
+        for desertico in habitats:
+            if desertico.habitat == "desertico":
+                datos.append([desertico.habitat, desertico.numAnimales, desertico.temperatura, desertico.dieta, desertico.aridez,desertico.tormentaArena])
+        for acuatico in habitats:
+            if acuatico.habitat == "acuatico":
+                datos.append([acuatico.habitat, acuatico.numAnimales, acuatico.temperatura, acuatico.dieta, acuatico.nadar,acuatico.respiraAgua])
+        for polar in habitats:
+            if polar.habitat == "polar":
+                datos.append([polar.habitat, polar.numAnimales, polar.temperatura, polar.dieta, polar.clima,polar.escasaVegetacion])
+        for selvatico in habitats:
+            if selvatico.habitat == "selvatico":
+                datos.append([selvatico.habitat, selvatico.numAnimales, selvatico.temperatura, selvatico.dieta, selvatico.climaSelvatico,selvatico.diversidad])
         return datos
 
     def aplicarTablaAnimales(self,animalesGuardados):

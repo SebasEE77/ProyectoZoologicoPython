@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd
+import model.habitat as habitatModel
 class Zoologico:
     def __init__(self):
         if "habitats" in st.session_state:
@@ -33,6 +33,19 @@ class Zoologico:
         for habitat in self.habitats:
             habitat.agregarAnimales(nuevoAnimal)
 
+    def agregarAnimales(self, nuevoAnimal):
+        self.contadorAnimales += 1
+        for animales in self.animales:
+            if animales.id == nuevoAnimal.id:
+                st.error("No se puede agregar ya que el id es el mismo al de otro animal")
+
+        if self.contadorAnimales > self.numAnimales:
+            st.error("No se puede agregar ya que no hay disponibilidad")
+        else:
+            st.success("El animal fue agregado correctamente")
+            self.animales.append(nuevoAnimal)
+            st.session_state["animales"] = self.animales
+
     def ingresarAnimalZoologico(self, nuevoAnimal):
         bandera = 0
         for animales in self.animalesGuardados:
@@ -40,7 +53,7 @@ class Zoologico:
                 st.error("No se puede agregar ya que el id es el mismo al de otro animal")
                 bandera = 1
         if bandera == 0:
-            st.success("El animal fue creado correctamente")
+            st.success("El animal fue agregado correctamente")
             self.animalesGuardados.append(nuevoAnimal)
             st.session_state["animalesGuardados"] = self.animalesGuardados
     def eliminarAnimalGuardado(self,id):

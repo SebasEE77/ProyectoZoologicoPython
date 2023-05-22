@@ -13,32 +13,21 @@ class Habitat:
             self.animales = []
             st.session_state["animales"] = []
 
-## Este metodo solamente muestra la información de los hábitats que existen en el zoológico
-    def imprimirHabitat(self):
-        print("Habitat: ",self.habitat)
-        print("Capacidad maxima: ",self.numAnimales)
-        print("Temperatura: ",self.temperatura)
-        print("Dieta: ",self.dieta)
-
 ## Este metodo agrega los animales a la lista animales teniendo en cuenta las características recibidas
 ## en el método de ingresarAnimal de zoologico.
     def agregarAnimales(self, nuevoAnimal):
-        bandera = 0
+        self.contadorAnimales += 1
         for animales in self.animales:
             if animales.id == nuevoAnimal.id:
                 st.error("No se puede agregar ya que el id es el mismo al de otro animal")
-                bandera = 1
-        if bandera == 0:
-            st.success("El animal fue creado correctamente")
+
+        if self.contadorAnimales > self.numAnimales:
+            st.error("No se puede agregar ya que no hay disponibilidad")
+        else:
+            st.success("El animal fue agregado correctamente")
             self.animales.append(nuevoAnimal)
             st.session_state["animales"] = self.animales
-
-        # if self.animales:
-        #     self.contadorAnimales += 1
-        # if len(self.animales) < self.numAnimales:
-        #     st.success("El animal fue agregado")
-        # else:
-        #     st.error("No hay disponibilidad en el hábitat")
+    
 
 ## Este método lo que hace es listar los animales dentro de la lista animales mostrando su id, nombre y tipo de hábitat,
 ## además, si no existe ningun animal se muestra el mensaje indicando que no existen.
@@ -159,49 +148,19 @@ class desertico(Habitat):
         self.aridez = aridez
         self.tormentaArena = tormentaArena
 
-    def imprimirHabitat(self):
-        print("-------------------------")
-        super().imprimirHabitat()
-        print("Clima Arido: ", self.aridez)
-        print("Hay tormentas de arena: ", self.tormentaArena)
-        print("-------------------------")
-
 class acuatico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, respiraAgua, nadar):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.respiraAgua = respiraAgua
         self.nadar = nadar
 
-    def imprimirHabitat(self):
-        print("-------------------------")
-        super().imprimirHabitat()
-        print("Se puede respirar bajo el agua: ", self.respiraAgua)
-        print("Se puede nadar: ", self.nadar)
-        print("-------------------------")
-
 class polar(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, clima, escasaVegetacion):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.clima = clima
         self.escasaVegetacion = escasaVegetacion
-
-    def imprimirHabitat(self):
-        print("-------------------------")
-        super().imprimirHabitat()
-        print("Clima de baja temperatura: ", self.clima)
-        print("Tiene escasa vegetacion: ", self.escasaVegetacion)
-        print("-------------------------")
-
 class selvatico(Habitat):
     def __init__(self, tipoHabitat, numAnimales, temperatura,dieta,contadorAnimales, climaSelvatico, diversidad):
         super().__init__(tipoHabitat, numAnimales, temperatura, dieta, contadorAnimales)
         self.climaSelvatico = climaSelvatico
         self.diversidad = diversidad
-
-    def imprimirHabitat(self):
-        print("-------------------------")
-        super().imprimirHabitat()
-        print("Clima calido y humedo: ", self.climaSelvatico)
-        print("Tiene mucha diversidad biologica: ", self.diversidad)
-        print("-------------------------")
-
