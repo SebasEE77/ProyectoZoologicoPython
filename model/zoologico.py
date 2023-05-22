@@ -14,10 +14,6 @@ class Zoologico:
             self.animalesGuardados = []
             st.session_state["animalesGuardados"] = []
 
-
-
-
-
 ## Este metodo de zoológico recibira la información del hábitat donde se agregará a la lista hábitats si se cumple
 ## la condición de que no exista otro hábitat igual.
     def agregarHabitat(self, nuevHabitat):
@@ -47,12 +43,6 @@ class Zoologico:
                 self.animalesGuardados.pop(i)
                 st.session_state["animalesGuardados"] = self.animalesGuardados
 
-
-
-# ## Este metodo dentro de zoológico recibira todos los datos del animal que se esta queriendo ingresar, primero verificando que su hábitat exista, luego ver a que hábitat se agrego y
-# ## posteriormente agregando al animal llamando al metodo agregarAnimales del hábitat correspondiente si es que cumple las distintas condiciones.
-# ## Aquí hay una bandera ya que ayuda a para el ciclo del for cuando se debe y así no recorrerlo innecesariamente.
-
 # ##  Este método verifica si hay algo en la lista de hábitats y luego la recorre para así en cada una llamar al metodo de mostrarAnimales,
 # ## mostrando de tal modo los animales dentro de cada habitat existente
     def mostrarAnimalesGeneral(self):
@@ -62,8 +52,6 @@ class Zoologico:
                 habitat.mostrarAnimales()
         else:
             st.error("No hay habitats disponibles en el zoologico, entonces, no existe ningun animal")
-
-
 
 # ## Este metodo recibe el id del animal, el hábitat y la opción a realizar con el animal. Dentro de esta se recorre
 # ## la lista de habitat buscando el hábitat específico del animal, luego de acuerdo a la opción escogida se llama el método correspondiente del

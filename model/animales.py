@@ -149,9 +149,3 @@ class Animales:
             else:
                 self.estadoActivo = 0
                 st.success("El animal ya duerme tranquilo")
-
-
-    # def estadoAnimal(self):
-    #     if self.estadoActivo == 0:
-    #         self.estadoActivo = 1
-    #         self.estadoJugar = 0

@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 from PIL import Image
 from io import BytesIO
+
 ## Esta clase se crea específicamente para mostrar el menu y se llamar los respectivos metodos desde el controlador.
 class zoologicoView:
 
@@ -19,6 +20,7 @@ class zoologicoView:
                  "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales",
                  "Interactuar con los animales","Consultar animales en internet"]
         selection = st.sidebar.radio("Selecciona una opción del menú", pages)
+
 
         if selection == "Inicio":
             st.title("Bienvenido al Zoologico de Cali")
