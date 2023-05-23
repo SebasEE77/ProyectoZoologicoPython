@@ -12,3 +12,23 @@ El programa en sí tiene un buen funcionamiento, en el main se llama al archivo 
 
 #### Evidencias
 A continuación se mostrará como evidencia que el programa funciona correctamente.
+###### El programa comienza con este menú.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/53eb8cd6-4ba5-4d93-a59e-61cfe9deff4d)
+###### Para añadir un hábitat se selecciona la opción 2 y escoge las características del hábitat.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/8145d858-ed7e-43cd-91db-ab99fb32bc7b)
+###### Para añadir un animal al zoológico se selecciona la opción 3 y se escribe las características del animal. Al final hay un mensaje de que se agrego.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/2b78844b-2a7d-4849-804a-cfd8bb723e60)
+###### Para añadir un animal al hábitat se selecciona la opción 4 y se escoge el id y el hábitat al cual quieras agregarlo. Asimismo, toca responder dos preguntas para ver si esta apto del hábitat escogida.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/5e24452d-9250-4cc8-8b7a-5c2ffa776555)
+###### Si quiere ver qué hábitats hay en el zoológico escoge la opción 5.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/f254bd2c-79a4-483f-a575-7e3838018346)
+###### Si se necesita ver la información de un animal del zoológico escoge la opción 6, pero para ver los animales en cada una de las hábitats es la opción 7.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/f470ef23-510c-4b3c-a858-71361c7decd0)
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/6aa003c4-3a95-496a-bd99-cc57c224f9e5)
+###### Será posible agregar una comida al animal con la opción 8 del menú, el cual tocará escoger el hábitat y el id del animal, después, se presentará un sub-menú donde se escogerá podrá ver la dieta, agregar una dieta y modificar una dieta de cualquier animal que este en una hábitat.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/21fb3ae7-6f26-450c-9bc5-f4f3b8d7f9b6)
+###### Tambien, será posible tener interacciones con los animales del zoológico escribiendo la opción 9 del menú principal, el cual tocará escoger el hábitat y el id del animal, luego, se presentará un sub-menú donde se podrá escoger jugar, comer o dormir con el animal seleccionado.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/df4da518-2c55-4a00-bb44-fc437a4202e1)
+###### Finalmente, la opción 10 del menú consiste en mirar varias fotos de animales que pueden ser parte del zoológico por medio de la función de API.
+![image](https://github.com/SebasEE77/ProyectoZoologicoPython/assets/105950433/87abd361-abd3-482c-b7c7-3a59d3b990b6)
+
