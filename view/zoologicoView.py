@@ -11,10 +11,14 @@ from io import BytesIO
 ## Esta clase se crea específicamente para mostrar el menu y se llamar los respectivos metodos desde el controlador.
 class zoologicoView:
 
+    # Este es el constructor de la clase zoologicoView
     def __init__(self):
         self.zoologico = zoologicoModel.Zoologico()
         self.controlador = ZoologicoController.zoologicoController(self.zoologico, self)
 
+
+    # Este metodo lo que hace es el cuerpo de lo que viene siendo nuestra interfaz grafica del zoologico, definimos
+    # lo que sera cada seccion de la parte grafica del zoologico, su cuerpo y widget que tienen.
     def mostrarMenu(self):
         pages = ["Inicio" ,"Agregar Habitat", "Agregar Animal a un Zoológico", "Agregar animal a un Hábitat", "Ver lista de Hábitats",
                  "Ver lista de Animales del Zoológico", "Ver lista animales general","Ver dieta de los animales",
@@ -190,6 +194,10 @@ class zoologicoView:
             nuevoAnimal = animalesModel.Animales(id, nombre, habitat, edad, dieta, horasDormir, temperatura, 1, 0, None ,None,3)
             return nuevoAnimal
 
+    #Este metodo lo que hace es mostrar primero los animales disponible para asignarle un habitat, para luego
+    # pedirle al usuario que escoga el id de los animales disponibles para agregar al habitat que el mismo
+    # usuario escoga, dado el caso que se presente inconvenientes como que el habitat del animal no corresponda
+    # con el habitat destino se imprime un mensaje indicando el error.
     def agregarAnimalHabitat(self, animalesGuardados, habitats):
         self.mostrarAnimalesZoologico(animalesGuardados)
         st.divider()
@@ -218,15 +226,23 @@ class zoologicoView:
         else:
             st.error("La selección por ahora no concuerda")
 
+    #Este metodo dado un id retorna el objeto animal correspondiente al arreglo de animalesGuardados que tenga
+    # el mismo id
     def verificarAnimal(self,animalesGuardados, id):
         for animales in animalesGuardados:
             if id == animales.id:
                 return animales
+
+    # Este metodo dado un habita retorna el objeto habitat correspondiente al arreglo de habitats que tenga
+    # el mismo tipo de habitat
     def verificarHabitat(self,habitats, habitatSeleccionado):
         for habitat in habitats:
             if habitat.habitat == habitatSeleccionado:
                 return habitat
 
+    #Este metodo lo que hace es que a la hora de agregar animales al zoologico dependiendo de su tipo de habitat
+    # se hacen preguntas especificas de su caracteristicas de tal modo ver si son aptos para estar en ese tipo de
+    # habitat
     def atributoHabitats(self,habitat):
         st.write("\nA continuacion se realizara dos preguntas cerradas para saber si el animal "
               "esta en condiciones del habitat seleccionado, \nsi escribe 'si' en ambas es porque esta en condiciones, sino no lo esta.")
@@ -294,6 +310,8 @@ class zoologicoView:
         else:
             st.error("No hay hábitats en el zoológico")
 
+    #Este metodo lo que hace es mostrar mediante una tabla los datos de los animales que existen dentro
+    # del sistema del zoologico
     def mostrarAnimalesZoologico(self,animalesGuardados):
         st.divider()
         if len(animalesGuardados) > 0:
@@ -311,10 +329,13 @@ class zoologicoView:
         else:
             st.error("No hay animales en el zoológico")
 
-
+    #Este metodo lo que es hace es mediante un string pasado como parametro hace el llamado de st.error con
+    # el mensaje pasado por parametro
     def mostraMensajeError(self, mensaje):
         st.error(mensaje)
 
+    # Este metodo lo que hace es el llamado correspiendiente a la api en el cuerpo de esta misma,
+    # mostrando asi imagenes de animales
     def llamadoApi(self):
         listaImagenes = ["https://placebear.com/200/300.jpg","https://images.dog.ceo/breeds/basenji/n02110806_4117.jpg",
                    "https://images.dog.ceo/breeds/ovcharka-caucasian/IMG_20190801_112134.jpg"]

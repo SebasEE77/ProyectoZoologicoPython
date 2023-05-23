@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 class Habitat:
+    #Constructor de la clase habitat
     def __init__(self, habitat, numAnimales, temperatura,dieta,contadorAnimales):
         self.habitat = habitat
         self.numAnimales = numAnimales
@@ -47,6 +48,9 @@ class Habitat:
                     )
                     st.table(datos)
 
+    #Este metodo lo que hace es retornar un arreglo con todas los atributos que haya de cada objeto tipo animal
+    # de tal modo quede una matriz con las caracteristicas de todos los animales existentes para mostrarlos
+    # en forma de tabla
     def aplicarTablaAnimalesGeneral(self):
         datos = []
         for animales in self.animales:
@@ -54,6 +58,9 @@ class Habitat:
                           animales.horasDormir,animales.temperatura])
         return datos
 
+    # Lo que hace este metodo se encarga de agregar todos los id de los animales dentro del arreglo animales
+    # para asi poder mostrar en un selectbox los id disponible, y en ayuda con la funcion verificarAnimal2
+    # se retorna el objeto animal correspondiente al id escogido
     def buscarAnimalAnimales(self):
         opcionesAnimales = []
         for animales in self.animales:
@@ -62,6 +69,8 @@ class Habitat:
         animalEscogido = self.verificarAnimal2(self.animales, id)
         return animalEscogido
 
+    # Lo que hace este metodo es mediante un id, buscar su correspondiente en el arreglo de animales retornando
+    # el objeto animal que pertenesca a ese id
     def verificarAnimal2(self,animalesGuardados, id):
         for animales in animalesGuardados:
             if id == animales.id:

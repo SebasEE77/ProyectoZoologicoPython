@@ -1,6 +1,7 @@
 import streamlit as st
 import model.habitat as habitatModel
 class Zoologico:
+    #Este es el constructor correspondiente a la clase zoologico
     def __init__(self):
         if "habitats" in st.session_state:
             self.habitats = st.session_state["habitats"]
@@ -27,6 +28,9 @@ class Zoologico:
             self.habitats.append(nuevHabitat)
             st.session_state["habitats"] = self.habitats
 
+    #Esta funcion se encarga de verificar que el animal que se esta tratando de registrar en el sistema
+    # del zoologico no tenga un id repetido, dado el caso se mostrara un mensaje de id repetido. Cuando
+    # no haya un id repetido el animal se ingresa en el arreglo de animalesGuardados
     def ingresarAnimalZoologico(self, nuevoAnimal):
         bandera = 0
         for animales in self.animalesGuardados:
@@ -37,6 +41,9 @@ class Zoologico:
             st.success("El animal fue agregado correctamente")
             self.animalesGuardados.append(nuevoAnimal)
             st.session_state["animalesGuardados"] = self.animalesGuardados
+    # Lo que hace este metodo es cuando se escoge un animal del sistema y se le asigna un habitat, de acuerdo
+    # al id de ese animal busca el mismo en el arreglo de animalesGuardados para eliminarlo de ahi, significando
+    # que ya tiene un habitat asignada
     def eliminarAnimalGuardado(self,id):
         for i, animales in enumerate(self.animalesGuardados):
             if animales.id == id:
@@ -68,7 +75,9 @@ class Zoologico:
         else:
             habitatEscogido.interactuarAnimal(animalEscogido)
 
-
+    # Lo que hace este metodo es buscar dentro del arreglo de habitat, el objeto tipo habitat cuyo
+    # atributo habitat coincidad con habitatSeleccionado que es pasado por parametro, en dado caso
+    # de encontrar la que coincida se retorna ese objeto tipo habitat
     def verificarHabitat2(self,habitats, habitatSeleccionado):
         for habitat in habitats:
             if habitat.habitat == habitatSeleccionado:

@@ -1,5 +1,6 @@
 import streamlit as st
 class zoologicoController:
+    #Este es el constructor de la clase zoologicoController
     def __init__(self, modelo, vista):
         self.modelo = modelo
         self.vista = vista
@@ -37,6 +38,8 @@ class zoologicoController:
         if opcion == 9:
             self.vista.llamadoApi()
 
+    #Este metodo lo que hace es retornar una matriz con todos los atributos de cada una de los tipos de habitat
+    # de tal modo se puedan representar mediante una tabla
     def aplicarTabla(self, habitats):
         datos = []
         for desertico in habitats:
@@ -53,6 +56,9 @@ class zoologicoController:
                 datos.append([selvatico.habitat, selvatico.numAnimales, selvatico.temperatura, selvatico.dieta, selvatico.climaSelvatico,selvatico.diversidad])
         return datos
 
+    # Este metodo lo que hace es retornar un arreglo con todas los atributos que haya de cada objeto tipo animal
+    # de tal modo quede una matriz con las caracteristicas de todos los animales existentes para mostrarlos
+    # en forma de tabla
     def aplicarTablaAnimales(self,animalesGuardados):
         datos = []
         for animales in animalesGuardados:

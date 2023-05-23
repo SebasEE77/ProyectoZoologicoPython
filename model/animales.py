@@ -1,6 +1,7 @@
 from random import randint
 import streamlit as st
 class Animales:
+    #Constructor de la clase animal
     def __init__(self, id, nombre, habitat, edad, dieta, horasDormir,temperatura,estadoActivo,estadoJugar, atributoHabitat1, atributoHabitat2,intentosJugar):
         self.id = id
         self.nombre = nombre
@@ -34,6 +35,7 @@ class Animales:
         else:
             st.warning("Por el momento no tiene dieta :(")
 
+    #Este metodo retorna el vector tipo dieta
     def modificarDietaInfo(self):
         return self.vectorDieta
 
